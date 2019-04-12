@@ -1,0 +1,12 @@
+language: java
+deploy:
+  provider: releases
+  api_key:
+    secure: rtjw6X+PJV6564YYyIpOcPuO/T18fkLdcZiiZm0FixO6iP8GWIqmaUeEFAI496CAi6+tulitHWs68hjs+uRgqb1vE3Ikl3UPWMUYeSINCI3I/mJru/H689Sew32872PhzfFDme5iAJRijoy5CYmxVXfCHM4mNGyi+RLvnAYraiQIXv6T+licy5EEeC7878pZu0Et6YhGpU4FWcWsPMeYU2IfHA5FrSiukXRaWqv6aIOBiXDRA+Nd8CP0Arl//SSSYAvYFUwg2oCvA0W8wqgHjLGDVhhYbLFenJgfuTEUJeqR5dZddCxWKtd6yh2FMtjAOWReyD4V+Ha1WouGgDspBvrxbVlqeLOcP0wUdU23HDZlreeVwkpYg/kW7rkZTTMoQWYY9Xyhk7zlyA+eC1/Xz81mcPAzIN2WurHnH0Xj+xTSmPIK0YtK6L2+fb1L14YhcbHIFLjmPkmKmR+hGb16hh8lqSkuKvyKSRKqzrnnxKnV0ESTZvqCASF1XC8tjmOGFjFTjhFANtcbxkEUYbMH/Pmlkssmzq/EPgxg4KIr7fmoUi1+R+sXT+yvrTG0SVW+AjKPDd2vjZv0q+PUlp4gCyYiQPlv40g6E0cEBa6B6sZqlw9Z4ZG5VbBenXUXuvjPNUnwb4mp7Nf/r1k7Rt9n9tN5vzATd/XMuIr/6rZION8=
+  file_glob: true
+  file: 'build/libs/*'
+  skip_cleanup: true
+  on:
+    all_branches: true
+    tags: true
+    repo: xebialabs-community/xlr-variable-setter-plugin
