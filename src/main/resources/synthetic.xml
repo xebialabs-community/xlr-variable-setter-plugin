@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright 2019 XEBIALABS
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+-->
+
+<synthetic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns="http://www.xebialabs.com/deployit/synthetic"
+           xsi:schemaLocation="http://www.xebialabs.com/deployit/synthetic synthetic.xsd">
+
+    <type type="variableSetter.Task" extends="xlrelease.PythonScript" virtual="true">
+        <property name="iconLocation" default="icon/icon.png" hidden="true" />
+
+        <property name="username" category="input" label="Username"  required="false"/>
+        <property name="password" category="input" label="Password" password="true" required="false"/>
+        
+    </type>
+
+    <type type="variableSetter.SetVariablesFromRemoteFiles" extends="variableSetter.Task">
+        <property name="scriptLocation" hidden="true" default="variablesetter/set_variables_task.py" />
+        <property name="targetURL" category="input" required="true" label="Target URL with placeholder" 
+            description="URL for the file. Use the special place holder :filename:. Examples: https://server.com/foo/:filename:,  http://host/project1/repo1/:filename:?raw"/>
+        <property name="fileNameList" category="input" kind="list_of_string" required="true" label="List of file names" 
+            description = "List of file name (including extension) to retrieve and parse. Current implementation can parse .yml, .yaml, and .properties files"/>
+        <property name="failIfFileNotFound" category="input" kind="boolean" default="false" required="true" label="Fail if file not found" 
+            description = "If checked, the task will fail if any one of the files listed above is not found."/>
+    </type>
+ 
+</synthetic>

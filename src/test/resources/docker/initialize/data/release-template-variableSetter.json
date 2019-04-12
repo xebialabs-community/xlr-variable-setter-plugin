@@ -1,0 +1,213 @@
+[
+  {
+    "id": "Applications/Release918f4190cec44402b868f39e44561068",
+    "type": "xlrelease.Release",
+    "title": "variableSetter",
+    "scheduledStartDate": "2019-03-25T15:00:00Z",
+    "flagStatus": "OK",
+    "overdueNotified": false,
+    "maxConcurrentReleases": 100,
+    "releaseTriggers": [],
+    "teams": [
+      {
+        "id": "Applications/Release918f4190cec44402b868f39e44561068/Team32d1828b7f09451a8b58b926826b8d8e",
+        "type": "xlrelease.Team",
+        "teamName": "Template Owner",
+        "members": [
+          "admin"
+        ],
+        "roles": [],
+        "permissions": [
+          "template#edit",
+          "template#lock_task",
+          "template#view",
+          "template#edit_triggers",
+          "template#edit_security",
+          "template#create_release"
+        ]
+      },
+      {
+        "id": "Applications/Release918f4190cec44402b868f39e44561068/Team1f3cd4283700434da998680a557020d3",
+        "type": "xlrelease.Team",
+        "teamName": "Release Admin",
+        "members": [],
+        "roles": [],
+        "permissions": [
+          "release#edit",
+          "release#lock_task",
+          "release#start",
+          "release#reassign_task",
+          "release#edit_blackout",
+          "template#view",
+          "release#edit_security",
+          "release#abort",
+          "release#view",
+          "release#edit_task"
+        ]
+      }
+    ],
+    "memberViewers": [
+      "admin"
+    ],
+    "roleViewers": [],
+    "attachments": [],
+    "phases": [
+      {
+        "id": "Applications/Release918f4190cec44402b868f39e44561068/Phase18c422d69e214500880dc40547ace04f",
+        "type": "xlrelease.Phase",
+        "title": "New Phase",
+        "flagStatus": "OK",
+        "overdueNotified": false,
+        "tasks": [
+          {
+            "id": "Applications/Release918f4190cec44402b868f39e44561068/Phase18c422d69e214500880dc40547ace04f/Task3cf14cdfbf0d472a8477ff4d539155c8",
+            "type": "xlrelease.CustomScriptTask",
+            "title": "setVariables",
+            "flagStatus": "OK",
+            "overdueNotified": false,
+            "comments": [],
+            "container": "Applications/Release918f4190cec44402b868f39e44561068/Phase18c422d69e214500880dc40547ace04f",
+            "facets": [],
+            "attachments": [],
+            "status": "PLANNED",
+            "waitForScheduledStartDate": true,
+            "delayDuringBlackout": false,
+            "postponedDueToBlackout": false,
+            "hasBeenFlagged": false,
+            "hasBeenDelayed": false,
+            "taskFailureHandlerEnabled": false,
+            "failuresCount": 0,
+            "variableMapping": {},
+            "tags": [],
+            "dueSoonNotified": false,
+            "locked": false,
+            "checkAttributes": false,
+            "watchers": [],
+            "pythonScript": {
+              "id": "Applications/Release918f4190cec44402b868f39e44561068/Phase18c422d69e214500880dc40547ace04f/Task3cf14cdfbf0d472a8477ff4d539155c8/PythonScript",
+              "type": "variableSetter.SetVariablesFromRemoteFiles",
+              "customScriptTask": "Applications/Release918f4190cec44402b868f39e44561068/Phase18c422d69e214500880dc40547ace04f/Task3cf14cdfbf0d472a8477ff4d539155c8",
+              "username": "xlr_test",
+              "password": "admin",
+              "targetURL": "http://mockserver:5000/project1/repo1/:filename:",
+              "fileNameList": [
+                "testYml.yml",
+                "testYaml.yaml",
+                "testProp.properties",
+                "notFound.file",
+                "notFound.yml"
+              ],
+              "failIfFileNotFound": false
+            }
+          }
+        ],
+        "release": "Applications/Release918f4190cec44402b868f39e44561068",
+        "status": "PLANNED"
+      }
+    ],
+    "queryableStartDate": "2019-03-25T15:00:00Z",
+    "realFlagStatus": "OK",
+    "status": "TEMPLATE",
+    "tags": [],
+    "variables": [
+      {
+        "id": "Applications/Release918f4190cec44402b868f39e44561068/Variable18f7286a4e7740db9a7a0aeb07d50ee4",
+        "type": "xlrelease.StringVariable",
+        "key": "testYmlVarString",
+        "requiresValue": false,
+        "showOnReleaseStart": false
+      },
+      {
+        "id": "Applications/Release918f4190cec44402b868f39e44561068/Variable33985f41752b4baeac74cde2a857d121",
+        "type": "xlrelease.BooleanVariable",
+        "key": "testYmlVarBoolean",
+        "requiresValue": false,
+        "showOnReleaseStart": false,
+        "value": false
+      },
+      {
+        "id": "Applications/Release918f4190cec44402b868f39e44561068/Variable14460daa601b4c2b847dc349d4834048",
+        "type": "xlrelease.IntegerVariable",
+        "key": "testYmlVarNumber",
+        "requiresValue": false,
+        "showOnReleaseStart": false,
+        "value": 0
+      },
+      {
+        "id": "Applications/Release918f4190cec44402b868f39e44561068/Variabledd6ba0d64953484a98218b951edc6372",
+        "type": "xlrelease.IntegerVariable",
+        "key": "testPropIntVar1",
+        "requiresValue": false,
+        "showOnReleaseStart": false,
+        "value": 0
+      },
+      {
+        "id": "Applications/Release918f4190cec44402b868f39e44561068/Variable18daf7ccf86344f2a7112c1c0c33b02f",
+        "type": "xlrelease.StringVariable",
+        "key": "testPropStrVar1",
+        "requiresValue": false,
+        "showOnReleaseStart": false
+      },
+      {
+        "id": "Applications/Release918f4190cec44402b868f39e44561068/Variable73cdb287206145808438ad24cfc67a96",
+        "type": "xlrelease.IntegerVariable",
+        "key": "testPropIntVar2",
+        "requiresValue": false,
+        "showOnReleaseStart": false,
+        "value": 0
+      },
+      {
+        "id": "Applications/Release918f4190cec44402b868f39e44561068/Variable5091b018092e48409fa77c053d8885ca",
+        "type": "xlrelease.StringVariable",
+        "key": "testPropStrVar2",
+        "requiresValue": false,
+        "showOnReleaseStart": false
+      },
+      {
+        "id": "Applications/Release918f4190cec44402b868f39e44561068/Variable8ba38da4f318451ca2363c95f0cf5b74",
+        "type": "xlrelease.BooleanVariable",
+        "key": "testPropBoolean",
+        "requiresValue": false,
+        "showOnReleaseStart": false,
+        "value": false
+      },
+      {
+        "id": "Applications/Release918f4190cec44402b868f39e44561068/Variable9a2b706abf254e88a16da7bd0cd405bb",
+        "type": "xlrelease.StringVariable",
+        "key": "testYamlStr",
+        "requiresValue": false,
+        "showOnReleaseStart": false
+      },
+      {
+        "id": "Applications/Release918f4190cec44402b868f39e44561068/Variableffdd0a75ac6e460d805bbed82132c5e8",
+        "type": "xlrelease.BooleanVariable",
+        "key": "testYamlBoolean",
+        "requiresValue": false,
+        "showOnReleaseStart": false,
+        "value": false
+      },
+      {
+        "id": "Applications/Release918f4190cec44402b868f39e44561068/Variable95f9ffeced5b44058edb1abf426c8dde",
+        "type": "xlrelease.IntegerVariable",
+        "key": "testYamlNumber",
+        "requiresValue": false,
+        "showOnReleaseStart": false,
+        "value": 0
+      }
+    ],
+    "calendarPublished": false,
+    "tutorial": false,
+    "abortOnFailure": false,
+    "allowConcurrentReleasesFromTrigger": true,
+    "runningTriggeredReleasesCount": 0,
+    "createdFromTrigger": false,
+    "scriptUsername": "admin",
+    "scriptUserPassword": "admin",
+    "extensions": [],
+    "autoStart": false,
+    "automatedResumeCount": 0,
+    "riskProfile": "Configuration/riskProfiles/Default risk profile",
+    "riskScore": "000",
+    "totalRiskScore": "0000"
+  }
+]

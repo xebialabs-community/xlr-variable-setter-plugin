@@ -1,0 +1,19 @@
+variables:
+  - key: testYmlVarString
+    type: xlrelease.StringVariable
+    value: Hello world
+  - key: testYmlVarBoolean
+    type: xlrelease.BooleanVariable
+    value: true
+  - key: testYmlVarNumber
+    type: xlrelease.IntegerVariable
+    value: 42
+  - key: nonexistentString
+    type: xlrelease.StringVariable
+    value: Goodbye world
+  - key: nonexistentBoolean
+    type: xlrelease.BooleanVariable
+    value: false
+  - key: nonexistentNumber
+    type: xlrelease.IntegerVariable
+    value: 7

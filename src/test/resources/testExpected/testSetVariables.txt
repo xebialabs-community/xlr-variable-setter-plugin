@@ -1,0 +1,13 @@
+{
+        "${testYamlStr}": "Greetings World",
+        "${testPropIntVar2}": "5",
+        "${testYamlBoolean}": "True",
+        "${testYmlVarNumber}": "42",
+        "${testYamlNumber}": "-16",
+        "${testYmlVarBoolean}": "True",
+        "${testPropStrVar2}": "00003",
+        "${testYmlVarString}": "Hello world",
+        "${testPropBoolean}": "True",
+        "${testPropStrVar1}": "This is a string",
+        "${testPropIntVar1}": "1999"
+}

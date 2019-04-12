@@ -1,0 +1,95 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
+plugins {
+  id "com.github.hierynomus.license" version "0.14.0"
+  id "com.xebialabs.xldp" version "1.0.5"
+  id 'nebula.release' version '6.0.0'
+}
+
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'java'
+apply plugin: 'maven'
+
+if (!project.hasProperty('release.scope')) {
+  project.ext['release.scope'] = 'patch'
+}
+
+if (!project.hasProperty('release.useLastTag')) {
+  project.ext['release.useLastTag'] = true
+}
+
+repositories {
+  mavenLocal()
+  mavenCentral()
+  maven {
+    url 'https://dist.xebialabs.com/public/maven2'
+  }
+  maven {
+    url 'https://dl.bintray.com/palantir/releases' // docker-compose-rule is published on bintray
+  }
+}
+
+test {
+    // Auto detected Unit tests only, exclude the end to end integration test
+    exclude '**/*IntegrationTest.class'
+    
+    // show standard out and standard error of the test JVM(s) on the console
+    testLogging.showStandardStreams = true
+}
+ 
+
+task integrationTest(type: Test, dependsOn: ['assemble']) {
+    // do not automatically scan for tests
+    scanForTestClasses = false 
+    // explicitly include the integration test
+    include '**/*IntegrationTest.class'
+    // To run tests - 
+    // 1. Docker  and Docker Compose must be installed 
+    // 2. The XL-Release image expects to find a valid XL-Release license here: ~/xl-licenses/xl-release-license.lic
+    // 3. To run the test - ./gradlew clean assemble integrationTest
+    //   The test will set up a temporary xlr/mockserver testbed using docker. The mockserver
+    //   will server up the property or yaml files
+    // After testing is complete, the test docker containers are stopped and removed. 
+
+    // To run demo or dev version (set up docker containers, load and run tests, but leave docker containers running):
+    //
+    // On the command line, set the property test.skipShutDown to false, like this:
+    //        ./gradlew clean assemble -Dtest.skipShutDown=true integrationTest
+    //
+    //     NOTE: In this case, before running the integrationTest again, you will need to manually stop and remove these containers
+
+    // Assign all Java system properties from
+    // the command line to the JavaExec task.
+    // This will allow us to pass the optional command line value test.skipShutDown=true to the integrationTest program
+    systemProperties System.properties
+    
+    // show standard out and standard error of the test JVM(s) on the console
+    testLogging.showStandardStreams = true
+}
+
+dependencies {
+  // Place rest-assured before JUnit dependency to make sure correct Hamcrest is used
+    testCompile 'io.rest-assured:rest-assured:3.2.0'
+    testCompile "junit:junit:4.11"
+    testCompile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
+    testCompile 'org.assertj:assertj-core:3.6.2'
+    testCompile 'com.palantir.docker.compose:docker-compose-rule-junit4:0.35.0'
+    testCompile 'com.palantir.docker.compose:docker-compose-rule-core:0.35.0'
+    testCompile group: 'org.slf4j', name: 'slf4j-simple', version: '1.8.0-beta2'
+    testCompile group: 'org.skyscreamer', name: 'jsonassert', version: '1.5.0'
+
+    compile 'com.google.guava:guava:23.0'
+
+    compile group: 'org.yaml', name: 'snakeyaml', version: '1.24'
+}
+
+version = "1.0.0"
+
+license {
+  header rootProject.file('License.md')
+  strictCheck false
+  excludes(["**/*.png",  "**/*.txt", "**/*.json", "**/*.pyc", "**/*.yml", "**/*.yaml", "**/*.properties"])
+  ext.year = Calendar.getInstance().get(Calendar.YEAR)
+  ext.name = 'XEBIALABS'
+}

@@ -1,0 +1,10 @@
+variables:
+  - key: testYamlStr
+    type: xlrelease.StringVariable
+    value: Greetings World
+  - key: testYamlBoolean
+    type: xlrelease.BooleanVariable
+    value: true
+  - key: testYamlNumber
+    type: xlrelease.IntegerVariable
+    value: -16
