@@ -1,7 +1,6 @@
 # XL Release Variable Setter Plugin
 
 [![Build Status][xlr-variable-setter-plugin-travis-image]][xlr-variable-setter-plugin-travis-url]
-
 [![License: MIT][xlr-variable-setter-plugin-license-image]][xlr-variable-setter-plugin-license-url]
 [![Github All Releases][xlr-variable-setter-plugin-downloads-image]]()
 
