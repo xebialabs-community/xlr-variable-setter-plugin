@@ -28,8 +28,7 @@ logging.basicConfig(filename='log/plugin.log',
 listOfYamlTypes = ['.yaml' , '.yml']
 listOfPropertiesTypes = ['.properties']
 
-def main(): 
-    base64string = base64.b64encode('%s:%s' % (username, password)).replace('\n', '')
+def main():
     fileType = ""
     newVars = []
     newVarsMap = HashMap()
@@ -42,7 +41,7 @@ def main():
         fileType = os.path.splitext(fileName)[1] 
         url = targetURL.replace(":filename:", fileName)
         logging.debug("The new URL is "+url)
-        data = getData(url, base64string)
+        data = getData(url)
 
         if len(data) > 0 and fileType in listOfYamlTypes:
             newVars = YamlParser.getVariablesList(data)
@@ -65,17 +64,22 @@ def main():
                 releaseApi.updateVariable(var)
             
             
-def getData(url, authString):
+def getData(url):
+    base64string = base64.b64encode('%s:%s' % (username, password)).replace('\n', '')
+    #nosec This will supress Bandit warning. This is not a public facing site, we will allow ftp and file URLs
     request = urllib2.Request(url)
-    request.add_header("Authorization", "Basic %s" % authString)
+    request.add_header("Authorization", "Basic %s" % base64string)
     data = ""
     try:
+        #nosec This will supress Bandit warning. This is not a public facing site, we will allow ftp and file URLs
         response = urllib2.urlopen(request)
     except urllib2.URLError as e:
         if hasattr(e, 'reason'):
             logging.debug('Failed to reach server - Reason: %s'% e.reason)
         if hasattr(e, 'code'):
             logging.debug('The server did not fulfill the request - Code: %s'% str(e.code))
+
+        # If user has configured for failure if a file is not retrieved 
         if failIfFileNotFound:
             logging.debug('File Not Found: %s'% url)
             print ("File not found - %s" % url)
@@ -87,5 +91,4 @@ def getData(url, authString):
 
 
 if __name__ == '__main__' or __name__ == '__builtin__':
-    main()   
-        
+    main()  

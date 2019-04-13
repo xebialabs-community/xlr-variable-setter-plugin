@@ -18,7 +18,6 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;

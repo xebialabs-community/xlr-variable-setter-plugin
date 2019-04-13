@@ -16,13 +16,13 @@ The plugin provides the ability to populate Release Variables with values retrie
 
 ## Requirements
 
-*   **Requirements**
-  *   **XL Release** 8.5.0+
+* **Requirements**
+*  **XL Release**   8.5.0+
 
 ## Installation
 
-* Copy the latest JAR file from the [releases page](https://github.com/xebialabs-community/xlr-variable-setter-plugin/releases) into the `XL_RELEASE_SERVER/plugins/__local__` directory.
-* Restart the XL Release server.
+*   Copy the latest JAR file from the [releases page](https://github.com/xebialabs-community/xlr-variable-setter-plugin/releases) into the `XL_RELEASE_SERVER/plugins/__local__` directory.
+*   Restart the XL Release server.
 
 ## Usage
 
@@ -41,7 +41,6 @@ NOTE:
 
 #### Property File Example
 ![VarSetterPropExample](images/exampleProp.png)
-
 
 ### Create Release Variables
 Create one or more Release Variables of type Text, Number, or Checkbox (Boolean). The plugin will populate only existing variables. It will not create new variables.
@@ -63,8 +62,6 @@ The xlr-variable-setter-plugin has a single task - Set Variables From Remote Fil
 3.  Enter a list of file names. The plugin can process property files and YAML files and expects file name extensions of .properties , .yml , or .yaml .
 4.  If a listed file is not found, the default behavior is to continue on with the task and retrieve the next file in the list. If 'Fail if file not found' is checked, however, the task will fail if a listed file is not retrieved. 
 
-
-
 ## Developers 
 
 Build and package the plugins with...
@@ -84,7 +81,7 @@ Build and package the plugins with...
     
 The test will set up a temporary xlr/mockserver testbed using docker. The mockserver is used to serve up the property or YAML files. After testing is complete, the test docker containers are stopped and removed. 
 
-### To run demo or dev version (set up docker containers, load and run tests, but leave docker containers running):
+### To run demo or dev version (set up docker containers, load and run tests, but leave docker containers running) -
     
 NOTE:
 1.  For requirements, see the 'To run integration tests' above
