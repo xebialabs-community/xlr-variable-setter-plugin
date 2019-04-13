@@ -24,75 +24,64 @@ logging.basicConfig(filename='log/plugin.log',
                             datefmt='%H:%M:%S',
                             level=logging.DEBUG)
 
-def main():  
-      
-    base64string = base64.b64encode('%s:%s' % (username, password)).replace('\n', '')
-     
-    fileName = ""
-    fileType = ""
-    # These are the file types we are prepared to process
-    listOfYamlTypes = ['.yaml' , '.yml']
-    listOfPropertiesTypes = ['.properties']
+# These are the file types we are prepared to process
+listOfYamlTypes = ['.yaml' , '.yml']
+listOfPropertiesTypes = ['.properties']
 
+def main(): 
+    base64string = base64.b64encode('%s:%s' % (username, password)).replace('\n', '')
+    fileType = ""
     newVars = []
     newVarsMap = HashMap()
-    # All of the current release variables in the template or the release
     # We will only update values for existing variables. We do not create new ones
     allExistingVars = releaseApi.getVariables(release.id)
+    # If it is a file type we can process, place in interator
+    filesToProcessItr = filter(lambda x: os.path.splitext(x)[1] in (listOfPropertiesTypes + listOfYamlTypes), fileNameList )
+    logging.debug("The filtered list = %s" % list(filesToProcessItr))
+    for fileName in filesToProcessItr:
+        fileType = os.path.splitext(fileName)[1] 
+        url = targetURL.replace(":filename:", fileName)
+        logging.debug("The new URL is "+url)
+        data = getData(url, base64string)
 
-    for item in fileNameList:
-        fileName = item
-        fileType = os.path.splitext(fileName)[1]
-        # If it is a file type we can process, get the contents and process according to type
-        if fileType in listOfYamlTypes or fileType in listOfPropertiesTypes:
-            url = targetURL.replace(":filename:", item)
-            logging.debug("The new URL is "+url)
-            data = getData(url, base64string)
-            if len(data) > 0:
-                if fileType in listOfYamlTypes:
-                    newVars = YamlParser.getVariablesList(data)
-                elif fileType in listOfPropertiesTypes:
-                    newVars = PropertiesParser.getVariablesList(data)
-                else:
-                    # If no data was returned, skip this file
-                    break
-                # put the new vars in a map indexed by key(name)
-                newVarsMap = HashMap()
-                for dynamicVar in newVars.getVariables():
-                    newVarsMap.put(dynamicVar.getKey(), dynamicVar)
-                
-                for var in allExistingVars:
-                    newVar = newVarsMap.get(var.key)
-                    # If this is from a properites file (where we have no type) or it is from a yaml file and type matches)
-                    if newVar and ( fileType in listOfPropertiesTypes or newVar.getType() == var.type):
-                    #if newVar:
-                        var.value = newVar.getValue()
-                        releaseApi.updateVariable(var)
-  
+        if len(data) > 0 and fileType in listOfYamlTypes:
+            newVars = YamlParser.getVariablesList(data)
+        elif len(data) > 0 and fileType in listOfPropertiesTypes:
+            newVars = PropertiesParser.getVariablesList(data)
+        else:
+            # If no data was returned, skip this file
+            break
 
-def getData(url, authString): 
+        # put the new vars in a map indexed by key(name)
+        for dynamicVar in newVars.getVariables():
+            newVarsMap.put(dynamicVar.getKey(), dynamicVar)
+        
+        for var in allExistingVars:
+            # Make sure this is an existing Release Variable
+            newVar = newVarsMap.get(var.key)
+            # If this is from a properites file (where we have no type) or it is from a yaml file and type matches)
+            if newVar and ( fileType in listOfPropertiesTypes or newVar.getType() == var.type):
+                var.value = newVar.getValue()
+                releaseApi.updateVariable(var)
+            
+            
+def getData(url, authString):
     request = urllib2.Request(url)
     request.add_header("Authorization", "Basic %s" % authString)
     data = ""
-
     try:
         response = urllib2.urlopen(request)
-        logging.debug('Response status: '+ str(response.code))
     except urllib2.URLError as e:
         if hasattr(e, 'reason'):
-            logging.debug('We failed to reach a server.')
-            logging.debug('Reason: ', e.reason)
-            logging.debug("For URL - "+url)
+            logging.debug('Failed to reach server - Reason: %s'% e.reason)
         if hasattr(e, 'code'):
-            logging.debug('The server couldn\'t fulfill the request.')
-            logging.debug('Error code: ', e.code)
-            logging.debug("ForURL - "+url)
+            logging.debug('The server did not fulfill the request - Code: %s'% str(e.code))
         if failIfFileNotFound:
-            print ("File not found - "+url)
+            logging.debug('File Not Found: %s'% url)
+            print ("File not found - %s" % url)
             sys.exit(1)
     else:
-        data = response.read(20000) # read only 20 000 chars
-    
+        data = response.read(20000) # read only 20 000 chars   
     return data
 
 

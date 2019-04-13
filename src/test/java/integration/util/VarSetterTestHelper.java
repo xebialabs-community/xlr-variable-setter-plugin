@@ -31,8 +31,7 @@ public final class VarSetterTestHelper {
     private static final String START_RELEASE_VARSETTER = "/templates/Applications/Release918f4190cec44402b868f39e44561068/start";
     private static final String GET_RELEASE_PREFIX = "/releases/";
     private static final String GET_VARIABLES_SUFFIX = "/variableValues";
-    // /api/v1/releases/Applications/Release162151faba694d03aa3065665cf26f21/variables
-
+    
     private VarSetterTestHelper() {
         /*
          * Private Constructor will prevent the instantiation of this class directly
@@ -64,7 +63,7 @@ public final class VarSetterTestHelper {
         if (response.getStatusCode() != 200) {
             System.out.println("Status line, import template was " + response.getStatusLine() + "");
         } else {
-            //String responseId = response.jsonPath().getString("id");
+            String postResponseId = response.jsonPath().getString("id");
         }
     }
 
@@ -103,7 +102,6 @@ public final class VarSetterTestHelper {
         } else {
             //releaseResult = response.jsonPath().get("phases[0].tasks[1].comments[0].text").toString();
             releaseResultStr = response.jsonPath().prettyPrint();
-            JSONParser parser = new JSONParser();
             try {
                 releaseResultJSON =  new org.json.JSONObject(releaseResultStr);
             } catch (Exception e) {

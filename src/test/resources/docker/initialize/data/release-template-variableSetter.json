@@ -10,7 +10,7 @@
     "releaseTriggers": [],
     "teams": [
       {
-        "id": "Applications/Release918f4190cec44402b868f39e44561068/Team32d1828b7f09451a8b58b926826b8d8e",
+        "id": "Applications/Release918f4190cec44402b868f39e44561068/Team966c0d8873a4424a9446f66bdfaf223d",
         "type": "xlrelease.Team",
         "teamName": "Template Owner",
         "members": [
@@ -27,7 +27,7 @@
         ]
       },
       {
-        "id": "Applications/Release918f4190cec44402b868f39e44561068/Team1f3cd4283700434da998680a557020d3",
+        "id": "Applications/Release918f4190cec44402b868f39e44561068/Teamb4c7f23e39a04769aee14e29191eeb19",
         "type": "xlrelease.Team",
         "teamName": "Release Admin",
         "members": [],
@@ -95,7 +95,9 @@
                 "testYaml.yaml",
                 "testProp.properties",
                 "notFound.file",
-                "notFound.yml"
+                "notFound.yml",
+                "file.bad",
+                "empty.yml"
               ],
               "failIfFileNotFound": false
             }
