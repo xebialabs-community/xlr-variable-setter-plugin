@@ -18,6 +18,10 @@ import os, io, json
 
 app = Flask(__name__)
 
+# These are the username and password we expect 
+expectedUN = "xlr_test"
+expectedPW = "admin"
+
 def getFile( fileName, status="200" ):
      filePath = "/mockserver/responses/%s" % fileName
      if not os.path.isfile(filePath):
@@ -34,7 +38,7 @@ def check_auth(username, password):
     """This function is called to check if a username /
     password combination is valid.
     """
-    return username == 'xlr_test' and password == 'admin'
+    return username == expectedUN and password == expectedPW
 
 def authenticate():
     """Sends a 401 response that enables basic auth"""
@@ -65,7 +69,6 @@ def index():
 @requires_auth
 def getRequestedFile(filename):
     return getFile(filename)
-    
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)

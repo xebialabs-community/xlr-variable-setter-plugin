@@ -38,7 +38,7 @@ def main():
     filesToProcessItr = filter(lambda x: os.path.splitext(x)[1] in (listOfPropertiesTypes + listOfYamlTypes), fileNameList )
     logging.debug("The filtered list = %s" % list(filesToProcessItr))
     for fileName in filesToProcessItr:
-        fileType = os.path.splitext(fileName)[1] 
+        fileType = os.path.splitext(fileName)[1]
         url = targetURL.replace(":filename:", fileName)
         logging.debug("The new URL is "+url)
         data = getData(url)
@@ -62,16 +62,13 @@ def main():
             if newVar and ( fileType in listOfPropertiesTypes or newVar.getType() == var.type):
                 var.value = newVar.getValue()
                 releaseApi.updateVariable(var)
-            
-            
+                       
 def getData(url):
     base64string = base64.b64encode('%s:%s' % (username, password)).replace('\n', '')
-    #nosec This will supress Bandit warning. This is not a public facing site, we will allow ftp and file URLs
     request = urllib2.Request(url)
     request.add_header("Authorization", "Basic %s" % base64string)
     data = ""
     try:
-        #nosec This will supress Bandit warning. This is not a public facing site, we will allow ftp and file URLs
         response = urllib2.urlopen(request)
     except urllib2.URLError as e:
         if hasattr(e, 'reason'):
@@ -79,16 +76,16 @@ def getData(url):
         if hasattr(e, 'code'):
             logging.debug('The server did not fulfill the request - Code: %s'% str(e.code))
 
-        # If user has configured for failure if a file is not retrieved 
+        # If user has configured for failure if a file is not retrieved
         if failIfFileNotFound:
             logging.debug('File Not Found: %s'% url)
             print ("File not found - %s" % url)
             sys.exit(1)
     else:
-        data = response.read(20000) # read only 20 000 chars   
+        data = response.read(20000) # read only 20 000 chars 
     return data
 
 
 
 if __name__ == '__main__' or __name__ == '__builtin__':
-    main()  
+    main()
