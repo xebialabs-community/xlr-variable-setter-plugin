@@ -16,7 +16,7 @@
            xsi:schemaLocation="http://www.xebialabs.com/deployit/synthetic synthetic.xsd">
 
     <type type="variableSetter.Task" extends="xlrelease.PythonScript" virtual="true">
-        <property name="iconLocation" default="icon/icon.png" hidden="true" />
+        <property name="iconLocation" default="icons/icon.png" hidden="true" />
 
         <property name="username" category="input" label="Username"  required="false"/>
         <property name="password" category="input" label="Password" password="true" required="false"/>
