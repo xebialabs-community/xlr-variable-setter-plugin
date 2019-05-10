@@ -10,24 +10,7 @@
     "releaseTriggers": [],
     "teams": [
       {
-        "id": "Applications/Release918f4190cec44402b868f39e44561068/Team966c0d8873a4424a9446f66bdfaf223d",
-        "type": "xlrelease.Team",
-        "teamName": "Template Owner",
-        "members": [
-          "admin"
-        ],
-        "roles": [],
-        "permissions": [
-          "template#edit",
-          "template#lock_task",
-          "template#view",
-          "template#edit_triggers",
-          "template#edit_security",
-          "template#create_release"
-        ]
-      },
-      {
-        "id": "Applications/Release918f4190cec44402b868f39e44561068/Teamb4c7f23e39a04769aee14e29191eeb19",
+        "id": "Applications/Release918f4190cec44402b868f39e44561068/Team8d75c6eeb44b4a3f8a54801458acda46",
         "type": "xlrelease.Team",
         "teamName": "Release Admin",
         "members": [],
@@ -43,6 +26,23 @@
           "release#abort",
           "release#view",
           "release#edit_task"
+        ]
+      },
+      {
+        "id": "Applications/Release918f4190cec44402b868f39e44561068/Team667908a26a544eb599981fcfcdb78e67",
+        "type": "xlrelease.Team",
+        "teamName": "Template Owner",
+        "members": [
+          "admin"
+        ],
+        "roles": [],
+        "permissions": [
+          "template#edit",
+          "template#lock_task",
+          "template#view",
+          "template#edit_triggers",
+          "template#edit_security",
+          "template#create_release"
         ]
       }
     ],
@@ -97,7 +97,8 @@
                 "notFound.file",
                 "notFound.yml",
                 "file.bad",
-                "empty.yml"
+                "empty.yml",
+                "test${version}.properties"
               ],
               "failIfFileNotFound": false
             }
@@ -195,6 +196,21 @@
         "requiresValue": false,
         "showOnReleaseStart": false,
         "value": 0
+      },
+      {
+        "id": "Applications/Release918f4190cec44402b868f39e44561068/Variabled4631d2bf6a34732aa72b63197c70ec4",
+        "type": "xlrelease.StringVariable",
+        "key": "test5Var",
+        "requiresValue": false,
+        "showOnReleaseStart": false
+      },
+      {
+        "id": "Applications/Release918f4190cec44402b868f39e44561068/Variable0581eb5cfe3c4a3d9e44bb6da3484755",
+        "type": "xlrelease.StringVariable",
+        "key": "version",
+        "requiresValue": false,
+        "showOnReleaseStart": false,
+        "value": "5"
       }
     ],
     "calendarPublished": false,

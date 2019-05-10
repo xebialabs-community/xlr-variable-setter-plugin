@@ -12,6 +12,7 @@ import os.path
 import urllib2, base64
 import sys
 import logging
+import re
 from setvariables.parsers import YamlParser
 from setvariables.parsers import PropertiesParser
 from java.util import HashMap
@@ -31,12 +32,12 @@ listOfPropertiesTypes = ['.properties']
 def main():
     fileType = ""
     newVars = []
-    newVarsMap = HashMap()
     # We will only update values for existing variables. We do not create new ones
     allExistingVars = releaseApi.getVariables(release.id)
     # If it is a file type we can process, place in interator
     filesToProcessItr = filter(lambda x: os.path.splitext(x)[1] in (listOfPropertiesTypes + listOfYamlTypes), fileNameList )
     logging.debug("The filtered list = %s" % list(filesToProcessItr))
+    
     for fileName in filesToProcessItr:
         fileType = os.path.splitext(fileName)[1]
         url = targetURL.replace(":filename:", fileName)
@@ -49,9 +50,10 @@ def main():
             newVars = PropertiesParser.getVariablesList(data)
         else:
             # If no data was returned, skip this file
-            break
+            continue
 
         # put the new vars in a map indexed by key(name)
+        newVarsMap = HashMap()
         for dynamicVar in newVars.getVariables():
             newVarsMap.put(dynamicVar.getKey(), dynamicVar)
         
@@ -62,6 +64,10 @@ def main():
             if newVar and ( fileType in listOfPropertiesTypes or newVar.getType() == var.type):
                 var.value = newVar.getValue()
                 releaseApi.updateVariable(var)
+                if var.type != "xlrelease.PasswordStringVariable":
+                    print var.key + "=" + str(var.value)+"\n"
+                else:
+                    print var.key + "=" + "*******"+"\n"
                        
 def getData(url):
     base64string = base64.b64encode('%s:%s' % (username, password)).replace('\n', '')
@@ -81,6 +87,8 @@ def getData(url):
             logging.debug('File Not Found: %s'% url)
             print ("File not found - %s" % url)
             sys.exit(1)
+        else:
+            return data
     else:
         data = response.read(20000) # read only 20 000 chars 
     return data

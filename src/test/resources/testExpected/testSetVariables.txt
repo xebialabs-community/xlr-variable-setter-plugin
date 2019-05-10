@@ -9,5 +9,7 @@
         "${testYmlVarString}": "Hello world",
         "${testPropBoolean}": "True",
         "${testPropStrVar1}": "This is a string",
-        "${testPropIntVar1}": "1999"
+        "${testPropIntVar1}": "1999",
+        "${version}": "5",
+        "${test5Var}": "The file name was successfully interpolated"
 }

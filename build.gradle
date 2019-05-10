@@ -47,15 +47,15 @@ task integrationTest(type: Test, dependsOn: ['assemble']) {
     // To run tests - 
     // 1. Docker  and Docker Compose must be installed 
     // 2. The XL-Release image expects to find a valid XL-Release license here: ~/xl-licenses/xl-release-license.lic
-    // 3. To run the test - ./gradlew clean assemble integrationTest
+    // 3. To run the test - ./gradlew clean integrationTest
     //   The test will set up a temporary xlr/mockserver testbed using docker. The mockserver
     //   will server up the property or yaml files
     // After testing is complete, the test docker containers are stopped and removed. 
 
     // To run demo or dev version (set up docker containers, load and run tests, but leave docker containers running):
     //
-    // On the command line, set the property test.skipShutDown to false, like this:
-    //        ./gradlew clean assemble -Dtest.skipShutDown=true integrationTest
+    // On the command line, set the property test.skipShutDown to true, like this:
+    //        ./gradlew clean -Dtest.skipShutDown=true integrationTest
     //
     //     NOTE: In this case, before running the integrationTest again, you will need to manually stop and remove these containers
 
