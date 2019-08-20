@@ -1,6 +1,7 @@
 package integration;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 /**
  * Copyright 2019 XEBIALABS
  *
@@ -12,10 +13,6 @@ import static org.junit.Assert.assertTrue;
  */
 import java.io.IOException;
 
-import com.palantir.docker.compose.DockerComposeRule;
-import com.palantir.docker.compose.configuration.ShutdownStrategy;
-
-//import org.json.JSONObject;
 import org.json.JSONObject;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
@@ -23,58 +20,40 @@ import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 
+import org.testcontainers.containers.DockerComposeContainer;
+
 import integration.util.VarSetterTestHelper;
 
 public class VarSetterIntegrationTest {
     
     @ClassRule
-    // This DockerComposeRule will clean up the docker containers after the tests have run
-    public static DockerComposeRule docker = DockerComposeRule.builder()
-                                                .file(VarSetterTestHelper.getResourceFilePath("docker/docker-compose.yml"))
-                                                .pullOnStartup(true)
-                                                .shutdownStrategy(getShutdownStrategy())
-                                                .build();
+    public static DockerComposeContainer docker =
+        new DockerComposeContainer(new File("build/resources/test/docker/docker-compose.yml"))
+            .withLocalCompose(true);
 
     @BeforeClass
     public static void initialize() throws IOException, InterruptedException {
         VarSetterTestHelper.initializeXLR();
     }
 
-    // Utility Methods
-
-    private static ShutdownStrategy getShutdownStrategy()
-    {
-        ShutdownStrategy strategy = null;
-        System.out.println("In get ShutdownStrategy");
-        String skip = System.getProperty("test.skipShutDown");
-        System.out.println("Property test.skipShutDown = "+skip);
-        if(skip != null && skip.equalsIgnoreCase("true"))
-        {
-            System.out.println("Skip");
-            strategy = ShutdownStrategy.SKIP;
-        } else {
-            System.out.println("Graceful");
-            strategy = ShutdownStrategy.GRACEFUL;
-        }
-        return strategy;
-    }
-
-
     // Tests
 
     @Test
     public void testSetVariables() throws Exception {
         JSONObject theResult = VarSetterTestHelper.getVarSetterReleaseResult();
-        //System.out.println("The TEST RESULT - "+theResult);
+        System.out.println("RESULT:\n"+theResult);
+
         assertTrue(theResult != null);
+
         // The file, testSetVariables, contains the JSONObject we expect to be returned from XLR. Order of variables does not matter
         String expected = VarSetterTestHelper.readFile(VarSetterTestHelper.getResourceFilePath("testExpected/testSetVariables.txt"));
         try {
             // This will assert that all pre-exisiting variables are there, have been set to the correct and no variables were add. Order does not matter.
             JSONAssert.assertEquals(expected, theResult, JSONCompareMode.NON_EXTENSIBLE);
         } catch (Exception e) {
+            System.out.println("FAILED: EXCEPTION: "+e.getMessage());
             e.printStackTrace();
         }
-        System.out.println("testSetVariables passed ");
+        System.out.println("testSetVariables passed");
     }
 }

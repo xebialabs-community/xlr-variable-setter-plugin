@@ -11,5 +11,8 @@
         "${testPropStrVar1}": "This is a string",
         "${testPropIntVar1}": "1999",
         "${version}": "5",
-        "${test5Var}": "The file name was successfully interpolated"
+        "${test5Var}": "The file name was successfully interpolated",
+        "${project_groupId}": "com.xebialabs",
+        "${project_artifactId}": "OrderProcessing",
+        "${project_version}": "1.0.0"
 }

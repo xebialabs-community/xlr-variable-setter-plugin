@@ -104,6 +104,7 @@ public final class VarSetterTestHelper {
             try {
                 releaseResultJSON =  new org.json.JSONObject(releaseResultStr);
             } catch (Exception e) {
+                System.out.println("FAILED: EXCEPTION: "+e.getMessage());
                 e.printStackTrace();
             }        
         }

@@ -70,18 +70,19 @@ task integrationTest(type: Test, dependsOn: ['assemble']) {
 
 dependencies {
   // Place rest-assured before JUnit dependency to make sure correct Hamcrest is used
-    testCompile 'io.rest-assured:rest-assured:3.2.0'
-    testCompile "junit:junit:4.11"
-    testCompile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
-    testCompile 'org.assertj:assertj-core:3.6.2'
-    testCompile 'com.palantir.docker.compose:docker-compose-rule-junit4:0.35.0'
-    testCompile 'com.palantir.docker.compose:docker-compose-rule-core:0.35.0'
-    testCompile group: 'org.slf4j', name: 'slf4j-simple', version: '1.8.0-beta2'
-    testCompile group: 'org.skyscreamer', name: 'jsonassert', version: '1.5.0'
+  testCompile 'io.rest-assured:rest-assured:3.2.0'
+  testCompile "junit:junit:4.11"
+  testCompile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
+  testCompile 'org.assertj:assertj-core:3.6.2'
+  // testCompile 'com.palantir.docker.compose:docker-compose-rule-junit4:1.2.2'
+  // testCompile 'com.palantir.docker.compose:docker-compose-rule-core:1.2.2'
+  testCompile "org.testcontainers:testcontainers:1.11.3"
+  testCompile group: 'org.slf4j', name: 'slf4j-simple', version: '1.8.0-beta2'
+  testCompile group: 'org.skyscreamer', name: 'jsonassert', version: '1.5.0'
 
-    compile 'com.google.guava:guava:23.0'
+  compile 'com.google.guava:guava:23.0'
 
-    compile group: 'org.yaml', name: 'snakeyaml', version: '1.24'
+  compile group: 'org.yaml', name: 'snakeyaml', version: '1.24'
 }
 
 

@@ -10,7 +10,7 @@
     "releaseTriggers": [],
     "teams": [
       {
-        "id": "Applications/Release918f4190cec44402b868f39e44561068/Team8d75c6eeb44b4a3f8a54801458acda46",
+        "id": "Applications/Release918f4190cec44402b868f39e44561068/Team4d157c42ba3a46d9bea261b2c857fdfe",
         "type": "xlrelease.Team",
         "teamName": "Release Admin",
         "members": [],
@@ -29,7 +29,7 @@
         ]
       },
       {
-        "id": "Applications/Release918f4190cec44402b868f39e44561068/Team667908a26a544eb599981fcfcdb78e67",
+        "id": "Applications/Release918f4190cec44402b868f39e44561068/Teambe4073098a854bcb8bdedde65855daa9",
         "type": "xlrelease.Team",
         "teamName": "Template Owner",
         "members": [
@@ -88,7 +88,7 @@
               "type": "variableSetter.SetVariablesFromRemoteFiles",
               "customScriptTask": "Applications/Release918f4190cec44402b868f39e44561068/Phase18c422d69e214500880dc40547ace04f/Task3cf14cdfbf0d472a8477ff4d539155c8",
               "username": "xlr_test",
-              "password": "admin",
+              "password": "{aes:v0}5wgSI8MG/IbKWZ2DUiPM2htMV+DkTHxbNtFqDAYuuqs=",
               "targetURL": "http://mockserver:5000/project1/repo1/:filename:",
               "fileNameList": [
                 "testYml.yml",
@@ -98,7 +98,8 @@
                 "notFound.yml",
                 "file.bad",
                 "empty.yml",
-                "test${version}.properties"
+                "test${version}.properties",
+                "testPom.xml"
               ],
               "failIfFileNotFound": false
             }
@@ -211,6 +212,27 @@
         "requiresValue": false,
         "showOnReleaseStart": false,
         "value": "5"
+      },
+      {
+        "id": "Applications/Release918f4190cec44402b868f39e44561068/Variable852dea63efbc49c183c0d61f3da707f0",
+        "type": "xlrelease.StringVariable",
+        "key": "project_groupId",
+        "requiresValue": false,
+        "showOnReleaseStart": false
+      },
+      {
+        "id": "Applications/Release918f4190cec44402b868f39e44561068/Variable47e20363b04b42fb9426f554383ecc37",
+        "type": "xlrelease.StringVariable",
+        "key": "project_artifactId",
+        "requiresValue": false,
+        "showOnReleaseStart": false
+      },
+      {
+        "id": "Applications/Release918f4190cec44402b868f39e44561068/Variable3d9312c1780548ef8a1131cb9d4da6d7",
+        "type": "xlrelease.StringVariable",
+        "key": "project_version",
+        "requiresValue": false,
+        "showOnReleaseStart": false
       }
     ],
     "calendarPublished": false,
@@ -220,7 +242,7 @@
     "runningTriggeredReleasesCount": 0,
     "createdFromTrigger": false,
     "scriptUsername": "admin",
-    "scriptUserPassword": "admin",
+    "scriptUserPassword": "{aes:v0}m74vENWgIvJdoDryuFkRsyY8OLRayZU3K7boQCwrZ1w=",
     "extensions": [],
     "autoStart": false,
     "automatedResumeCount": 0,
