@@ -37,7 +37,7 @@ def main():
     # We will only update values for existing variables. We do not create new ones
     allExistingVars = releaseApi.getVariables(release.id)
     # If it is a file type we can process, place in interator
-    filesToProcessItr = filter(lambda x: os.path.splitext(x)[1] in (listOfPropertiesTypes + listOfYamlTypes), fileNameList )
+    filesToProcessItr = filter(lambda x: os.path.splitext(x)[1] in (listOfPropertiesTypes + listOfYamlTypes + listOfXmlTypes), fileNameList )
     logging.debug("The filtered list = %s" % list(filesToProcessItr))
     
     for fileName in filesToProcessItr:
