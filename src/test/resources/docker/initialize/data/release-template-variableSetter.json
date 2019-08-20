@@ -98,7 +98,8 @@
                 "notFound.yml",
                 "file.bad",
                 "empty.yml",
-                "test${version}.properties"
+                "test${version}.properties",
+                "testPom.xml"
               ],
               "failIfFileNotFound": false
             }
