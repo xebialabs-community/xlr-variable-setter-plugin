@@ -46,8 +46,8 @@ public class VarSetterIntegrationTest {
     {
         ShutdownStrategy strategy = null;
         System.out.println("In get ShutdownStrategy");
-        System.out.println("Property test.skipShutDown = "+System.getProperty("test.skipShutDown"));
         String skip = System.getProperty("test.skipShutDown");
+        System.out.println("Property test.skipShutDown = "+skip);
         if(skip != null && skip.equalsIgnoreCase("true"))
         {
             System.out.println("Skip");

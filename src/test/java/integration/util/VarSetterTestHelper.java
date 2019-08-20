@@ -118,10 +118,11 @@ public final class VarSetterTestHelper {
         String resourcePath = "";
         ClassLoader classLoader = VarSetterTestHelper.class.getClassLoader();
         try {
-            resourcePath = new File (classLoader.getResource(filePath).toURI()).getAbsolutePath();  
+            resourcePath = new File (classLoader.getResource(filePath).toURI()).getAbsolutePath();
         } catch (Exception e) {
             e.printStackTrace();
         }
+        System.out.println("resourcePath = " + resourcePath);
         return resourcePath;
     }
 

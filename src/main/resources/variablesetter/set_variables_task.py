@@ -13,6 +13,7 @@ import urllib2, base64
 import sys
 import logging
 import re
+from setvariables.parsers import XmlParser
 from setvariables.parsers import YamlParser
 from setvariables.parsers import PropertiesParser
 from java.util import HashMap
@@ -28,6 +29,7 @@ logging.basicConfig(filename='log/plugin.log',
 # These are the file types we are prepared to process
 listOfYamlTypes = ['.yaml' , '.yml']
 listOfPropertiesTypes = ['.properties']
+listOfXmlTypes = ['.xml']
 
 def main():
     fileType = ""
@@ -44,13 +46,19 @@ def main():
         logging.debug("The new URL is "+url)
         data = getData(url)
 
-        if len(data) > 0 and fileType in listOfYamlTypes:
+        if len(data) == 0:
+            continue
+
+        if fileType in listOfYamlTypes:
             newVars = YamlParser.getVariablesList(data)
-        elif len(data) > 0 and fileType in listOfPropertiesTypes:
+        elif fileType in listOfPropertiesTypes:
             newVars = PropertiesParser.getVariablesList(data)
+        elif fileType in listOfXmlTypes:
+            newVars = XmlParser.getVariablesList(data)
         else:
             # If no data was returned, skip this file
-            continue
+            logging.error("Unknown file type: "+fileType)
+            sys.exit(1)
 
         # put the new vars in a map indexed by key(name)
         newVarsMap = HashMap()
