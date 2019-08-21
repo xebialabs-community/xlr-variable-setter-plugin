@@ -55,6 +55,7 @@ def main():
             newVars = PropertiesParser.getVariablesList(data)
         elif fileType in listOfXmlTypes:
             newVars = XmlParser.getVariablesList(data)
+            logging.debug("Finished with the xml parser")
         else:
             # If no data was returned, skip this file
             logging.error("Unknown file type: "+fileType)

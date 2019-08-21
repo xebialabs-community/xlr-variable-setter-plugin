@@ -88,7 +88,7 @@
               "type": "variableSetter.SetVariablesFromRemoteFiles",
               "customScriptTask": "Applications/Release918f4190cec44402b868f39e44561068/Phase18c422d69e214500880dc40547ace04f/Task3cf14cdfbf0d472a8477ff4d539155c8",
               "username": "xlr_test",
-              "password": "{aes:v0}5wgSI8MG/IbKWZ2DUiPM2htMV+DkTHxbNtFqDAYuuqs=",
+              "password": "admin",
               "targetURL": "http://mockserver:5000/project1/repo1/:filename:",
               "fileNameList": [
                 "testYml.yml",
@@ -242,7 +242,7 @@
     "runningTriggeredReleasesCount": 0,
     "createdFromTrigger": false,
     "scriptUsername": "admin",
-    "scriptUserPassword": "{aes:v0}m74vENWgIvJdoDryuFkRsyY8OLRayZU3K7boQCwrZ1w=",
+    "scriptUserPassword": "admin",
     "extensions": [],
     "autoStart": false,
     "automatedResumeCount": 0,

@@ -10,89 +10,71 @@
 
 package setvariables.parsers;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
+
 import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 import org.w3c.dom.Node;
-import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 import setvariables.DynamicVariable;
 import setvariables.DynamicVariables;
 
 public class XmlParser {
 
+    
     public static DynamicVariables getVariablesList(String input)
-            throws ParserConfigurationException, SAXException, IOException {
+            throws ParserConfigurationException, SAXException, IOException, XPathExpressionException {
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-        Document doc = dBuilder.parse(input);
+        Document doc = dBuilder.parse(new InputSource(new StringReader(input)));
         doc.getDocumentElement().normalize();
-
-        DynamicVariables dynamicVars = null;
+        DynamicVariables dynamicVars = getElementAttributes(doc);
         return dynamicVars;
     }
 
-    static DynamicVariables getElementAttributes(Document doc)
-    {
-       NodeList nl = doc.getElementsByTagName("*");
-     
-       List<DynamicVariable> theList = new ArrayList<DynamicVariable>();
+    static DynamicVariables getElementAttributes(Document doc) throws XPathExpressionException{
+        XPath xPath =  XPathFactory.newInstance().newXPath();
+        String expression = "//*[not(*)]";
 
-       int len = nl.getLength();
-    
-       for (int j=0; j < len; j++)
-       {
-          Element e = (Element) nl.item(j);
-          System.out.println(e.getTagName() + ":");
-
-          addChildren(theList, "", e);
-       }
-
-       DynamicVariables dynamicVars = new DynamicVariables();
-       dynamicVars.setVariables(theList);
-       return dynamicVars;
-    }
-
-    private static void addChildren(List<DynamicVariable> theList, String prefix, Element e) 
-    {
-        String nodename = e.getNodeValue();
-        if ( e.hasChildNodes() ) 
+        List<DynamicVariable> theList = new ArrayList<DynamicVariable>();
+        
+        NodeList nodeList = (NodeList) xPath.compile(expression).evaluate(doc, XPathConstants.NODESET);
+        for(int i = 0 ; i < nodeList.getLength(); i++) 
         {
-            String p = ( nodename.length() > 0 ? prefix + "_" + nodename : nodename );
-
-            NodeList nList = e.getChildNodes();
-
-            for (int temp = 0; temp < nList.getLength(); temp++) {
-                Node nNode = nList.item(temp);
-                System.out.println("\nCurrent Element :" + nNode.getNodeName());
-                
-                if (nNode.getNodeType() == Node.ELEMENT_NODE) 
-                {
-                    Element eElement = (Element) nNode;
-                    addChildren(theList, p, eElement);
-                }
-            }
-        }
-        else
-        {
-            String nodeval  = e.getNodeValue();
-
             DynamicVariable dynVar = new DynamicVariable();
-            dynVar.setKey(nodename);
-            dynVar.setValue(nodeval);
+            //Set key to string that represents the parent node names and this node name separated by underscores
+            dynVar.setKey(getPath(nodeList.item(i)));
+            dynVar.setValue(nodeList.item(i).getTextContent());
             dynVar.setType("xlrelease.StringVariable");
             theList.add(dynVar);
-
-            System.out.print(nodename + " : " + nodeval);
         }
+    
+        DynamicVariables dynamicVars = new DynamicVariables();
+        dynamicVars.setVariables(theList);
+        return dynamicVars;
     }
+
+    private static String getPath(Node node) {
+        
+        Node parent = node.getParentNode();
+        if (parent == null) {
+            return node.getNodeName();
+        }
+        String path = getPath(parent) + "_" + node.getNodeName();
+        return path.replace("#document_", "");
+    }
+
 }

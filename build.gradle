@@ -49,21 +49,9 @@ task integrationTest(type: Test, dependsOn: ['assemble']) {
     // 2. The XL-Release image expects to find a valid XL-Release license here: ~/xl-licenses/xl-release-license.lic
     // 3. To run the test - ./gradlew clean integrationTest
     //   The test will set up a temporary xlr/mockserver testbed using docker. The mockserver
-    //   will server up the property or yaml files
+    //   will serve up the property or yaml files
     // After testing is complete, the test docker containers are stopped and removed. 
 
-    // To run demo or dev version (set up docker containers, load and run tests, but leave docker containers running):
-    //
-    // On the command line, set the property test.skipShutDown to true, like this:
-    //        ./gradlew clean -Dtest.skipShutDown=true integrationTest
-    //
-    //     NOTE: In this case, before running the integrationTest again, you will need to manually stop and remove these containers
-
-    // Assign all Java system properties from
-    // the command line to the JavaExec task.
-    // This will allow us to pass the optional command line value test.skipShutDown=true to the integrationTest program
-    systemProperties System.properties
-    
     // show standard out and standard error of the test JVM(s) on the console
     testLogging.showStandardStreams = true
 }
@@ -74,8 +62,6 @@ dependencies {
   testCompile "junit:junit:4.11"
   testCompile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
   testCompile 'org.assertj:assertj-core:3.6.2'
-  // testCompile 'com.palantir.docker.compose:docker-compose-rule-junit4:1.2.2'
-  // testCompile 'com.palantir.docker.compose:docker-compose-rule-core:1.2.2'
   testCompile "org.testcontainers:testcontainers:1.11.3"
   testCompile group: 'org.slf4j', name: 'slf4j-simple', version: '1.8.0-beta2'
   testCompile group: 'org.skyscreamer', name: 'jsonassert', version: '1.5.0'
@@ -89,7 +75,7 @@ dependencies {
 license {
   header rootProject.file('License.md')
   strictCheck false
-  excludes(["**/*.png",  "**/*.txt", "**/*.json", "**/*.pyc", "**/*.yml", "**/*.yaml", "**/*.properties"])
+  excludes(["**/*.png",  "**/*.txt", "**/*.json", "**/*.pyc", "**/*.yml", "**/*.yaml", "**/*.properties", "**/*.xml"])
   ext.year = Calendar.getInstance().get(Calendar.YEAR)
   ext.name = 'XEBIALABS'
 }
