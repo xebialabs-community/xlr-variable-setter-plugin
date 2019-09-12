@@ -14,7 +14,8 @@ See the [XL Release reference manual](https://docs.xebialabs.com/xl-release) for
 
 ## Overview
 
-The plugin provides the ability to populate Release Variables with values retrieved from remote YAML or property files (files must be accessible via URL). One possible use case is a single XL Release Template used for multiple projects stored in multiple repositories with project specific Release Variable values stored in a property or YAML file within each repository. The plugin task - Set Variables From Remote Files - will retrieve the file or files, parse each file and then set the values of designated release variables. 
+The plugin provides the ability to populate Release Variables with values retrieved from remote property, XML, or YAML files (files must be accessible via URL). One possible use case is a single XL Release Template used for multiple projects stored in multiple repositories with project specific Release Variable values stored in a property, XML, or YAML file within each repository. The plugin task - Set Variables From Remote Files - will retrieve the file or files, parse each file and then set the values of designated Release Variables. 
+Note: The plugin sets existing Release Variables. It does not create Release Variables. 
 
 ## Requirements
 
@@ -30,38 +31,46 @@ The plugin provides the ability to populate Release Variables with values retrie
 
 ### Create Files
 
-Begin by creating one or more property or YAML files and put them where they can be retrieved using a URL (a GIT repository, for example). Use the following examples as a guideline for your files. 
+Begin by creating one or more property, XML, or YAML files and put them where they can be retrieved using a URL (a GIT repository, for example). Use the following examples as a guideline for your files. 
 
 NOTE:
 1.  Property files must have the extension .properties
-2.  YAML files must have the extension .yaml or .yml
-3.  Property files are simple name=value pairs with the name corresponding to a Release Variable name you will configure in the XLR Release Template.
-4.  YAML files must begin with the 'variables' declaration. The key value corresponds to the Release Variable name configured in XL Release, and the type designation corresponds to the type of the Release Variable. The type must have one of these three values - xlrelease.StringVariable or xlrelease.BooleanVariable or xlrelease.IntegerVariable. The type xlrelease.BooleanVariable corresponds to the 'Checkbox' type in XL Release.
-
-#### YAML File Example
-![VarSetterYAMLExample](images/exampleYAML.png)
+2.  XML files must have the extension .xml
+3.  YAML files must have the extension .yaml or .yml
+4.  Property files are simple name=value pairs with the name corresponding to a Release Variable name you will configure in the XLR Release Template.
+5.  YAML files must begin with the 'variables' declaration. The key value corresponds to the Release Variable name configured in XL Release, and the type designation corresponds to the type of the Release Variable. The type must have one of these three values - xlrelease.StringVariable or xlrelease.BooleanVariable or xlrelease.IntegerVariable. The type xlrelease.BooleanVariable corresponds to the 'Checkbox' type in XL Release.
 
 #### Property File Example
 ![VarSetterPropExample](images/exampleProp.png)
+#### XML File Example
+![VarSetterXMLExample](images/exampleXML.png)
+#### YAML File Example
+![VarSetterYAMLExample](images/exampleYAML.png)
+
+
 
 ### Create Release Variables
-Create one or more Release Variables of type Text, Number, or Checkbox (Boolean). The plugin will populate only existing variables. It will not create new variables.
-![VarSetterPropExample](images/createVar1.png)
+Create one or more Release Variables of type Text, Number, or Checkbox (Boolean). The plugin will populate only existing variables. It will not create new variables. Name the variable to match the name used in the file.
+NOTE: Follow this XPATH-like naming convention for variables that will be retrieved from XML files:
+    1. Use underscores instead of slashes in the XPATH
+    2. In the example xml, shown above, the variable for the value project/groupId must be named project_groupId
+![VarSetterCreateVar1](images/createVar1.png)
 
 Configure the variable with a name, a type and an empty default value. Uncheck the 'Required' and 'Show on Create Release form' options.
-![VarSetterPropExample](images/createVar2.png)
+![VarSetterCreateVar2](images/createVar2.png)
 
 ### Configure the Template to 'Run as User'
-The template or release must run as a user with sufficient permissions to update Release Variables.
-![VarSetterPropExample](images/runAsScreen.png)
+IMPORTANT! The template or release must run as a user with sufficient permissions to update Release Variables.
+![VarSetterRunAs](images/runAsScreen.png)
 
 ### Configure the plugin task
 The xlr-variable-setter-plugin has a single task - Set Variables From Remote Files.
-![VarSetterPropExample](images/addTask.png)
+![VarSetterAdd](images/addTask.png)
+![VarSetterConfigure](images/configureTask.png)
 
-1.  Enter the Username and Password for the site from which the property or YAML file or files will be retrieved
-2.  Enter template for the URL where the file or files will be retrieved. This URL must contain the literal string :filename: as a placeholder for the property or YAML file file names.  For example - https://server.com/foo/:filename:  or http://host/project/repo1/:filename:?raw
-3.  Enter a list of file names. The plugin can process property files and YAML files and expects file name extensions of .properties , .yml , or .yaml .
+1.  Enter the Username and Password for the site from which the property, XML, or YAML file or files will be retrieved
+2.  Enter template for the URL where the file or files will be retrieved. This URL must contain the literal string :filename: as a placeholder for the property, XML, or YAML file filenames.  For example - https://server.com/foo/:filename:  or http://host/project/repo1/:filename:?raw
+3.  Enter a list of file names. The plugin can process pproperty, XML, or YAML files and expects file name extensions of .properties , .xml, .yml , or .yaml .
 4.  If a listed file is not found, the default behavior is to continue on with the task and retrieve the next file in the list. If 'Fail if file not found' is checked, however, the task will fail if a listed file is not retrieved. 
 
 ## Developers 
@@ -83,27 +92,20 @@ Build and package the plugins with...
     
 The test will set up a temporary xlr/mockserver testbed using docker. The mockserver is used to serve up the property or YAML files. After testing is complete, the test docker containers are stopped and removed. 
 
-### To run demo or dev version (set up docker containers, load and run tests, but leave docker containers running) -
+### To run demo or dev version (set up docker containers for both XLR and the mock server) -
     
 NOTE:
 1.  For requirements, see the 'To run integration tests' above
 2.  XL Release will run on the [localhost port 15516](http://localhost:15516/)
 3.  The XL Release username / password is admin / admin
 4.  The Mockserver runs on the [localhost port 5099](http://localhost:5099/)
-5.  The example YAML and property files used in the demo are located in the src/test/resources/mockserver/responses directory
-6.  To run the dev/demo mode, open a terminal in the root of the xlr-variable-setter-plugin and run -
+5.  The example YAML, XML and property files used in the demo are located in the <xlr-varible-setter-plugin code base>/src/test/resources/mockserver/responses directory
+6.  To run the dev/demo mode, open a terminal, cd into the src/test/resources/docker directory of the plugin code and run
 
 ```bash
-./gradlew clean -Dtest.skipShutDown=true integrationTest
+docker-compose up -d
 ```
-NOTE: When running dev/demo mode, before running the integrationTest again, you will need to manually stop and remove these containers, as follows:
-    
-```bash
-docker stop mockserver
-docker rm mockserver
-docker stop xlr
-docker rm xlr
-```
+After XLR starts up, login using the admin admin credentials and then use the XLR 'Import Template' feature to import the template found in the src/test/resources/docker/initialize/data directory. You can then create a release and run the test example.
 
 [xlr-variable-setter-plugin-travis-image]: https://travis-ci.org/xebialabs-community/xlr-variable-setter-plugin.svg?branch=master
 [xlr-variable-setter-plugin-travis-url]: https://travis-ci.org/xebialabs-community/xlr-variable-setter-plugin
