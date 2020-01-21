@@ -1,5 +1,5 @@
 #
-# Copyright 2019 XEBIALABS
+# Copyright 2020 XEBIALABS
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 #
@@ -13,10 +13,13 @@ import urllib2, base64
 import sys
 import logging
 import re
+
+from variablesetter.common import set_variables
+
 from setvariables.parsers import XmlParser
 from setvariables.parsers import YamlParser
 from setvariables.parsers import PropertiesParser
-from java.util import HashMap
+
 from com.xebialabs.xlrelease.api.v1 import ReleaseApi
 from com.xebialabs.xlrelease.api.v1.forms import Variable
 
@@ -61,23 +64,9 @@ def main():
             logging.error("Unknown file type: "+fileType)
             sys.exit(1)
 
-        # put the new vars in a map indexed by key(name)
-        newVarsMap = HashMap()
-        for dynamicVar in newVars.getVariables():
-            newVarsMap.put(dynamicVar.getKey(), dynamicVar)
-        
-        for var in allExistingVars:
-            # Make sure this is an existing Release Variable
-            newVar = newVarsMap.get(var.key)
-            # If this is from a properites file (where we have no type) or it is from a yaml file and type matches)
-            if newVar and ( fileType in listOfPropertiesTypes or newVar.getType() == var.type):
-                var.value = newVar.getValue()
-                releaseApi.updateVariable(var)
-                if var.type != "xlrelease.PasswordStringVariable":
-                    print var.key + "=" + str(var.value)+"\n"
-                else:
-                    print var.key + "=" + "*******"+"\n"
-                       
+        set_variables(releaseApi, newVars, allExistingVars)
+
+
 def getData(url):
     base64string = base64.b64encode('%s:%s' % (username, password)).replace('\n', '')
     request = urllib2.Request(url)

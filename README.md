@@ -14,7 +14,7 @@ See the [XL Release reference manual](https://docs.xebialabs.com/xl-release) for
 
 ## Overview
 
-The plugin provides the ability to populate Release Variables with values retrieved from remote property, XML, or YAML files that are accessible via URL. One use case is a single XL Release Template used for multiple projects stored in multiple repositories with project specific Release Variable values stored in a property, XML, or YAML file within each repository. The plugin task _Set Variables From Remote Files_ will retrieve and parse each specified file and then set the values of designated Release Variables. 
+The plugin provides the ability to populate Release Variables with values retrieved from remote property, XML, or YAML files that are accessible via URL, or from JSON in a variable. One use case is a single XL Release Template used for multiple projects stored in multiple repositories with project specific Release Variable values stored in a property, XML, or YAML file within each repository. The plugin task _Set Variables From Remote Files_ will retrieve and parse each specified file and then set the values of designated Release Variables. 
 Note: The plugin sets existing Release Variables. It does not create Release Variables. 
 
 ## Requirements
@@ -26,7 +26,9 @@ Note: The plugin sets existing Release Variables. It does not create Release Var
 *   Copy the latest JAR file from the [releases page](https://github.com/xebialabs-community/xlr-variable-setter-plugin/releases) into the `XL_RELEASE_SERVER/plugins/__local__` directory.
 *   Restart the XL Release server.
 
-## Usage
+## Usage : Set Variables Task
+
+This updates release variables from a file.
 
 ### Create Files
 
@@ -45,8 +47,6 @@ NOTE:
 ![VarSetterXMLExample](images/exampleXML.png)
 #### YAML File Example
 ![VarSetterYAMLExample](images/exampleYAML.png)
-
-
 
 ### Create Release Variables
 Create one or more Release Variables of type Text, Number, or Checkbox (Boolean). The plugin will populate only existing variables. It will not create new variables. Name the variable to match the name used in the file.
@@ -72,7 +72,67 @@ The xlr-variable-setter-plugin has a single task - Set Variables From Remote Fil
 3.  Enter a list of file names. The plugin can process property, XML, or YAML files and expects file name extensions to be either .properties, .xml, .yml , or .yaml.
 4.  If a listed file is not found the default behavior is to continue on with the task and retrieve the next file in the list. If 'Fail if file not found' is checked, however, the task will fail if a listed file is not retrieved. 
 
-## Developers 
+## Usage : Set Variables Task From JSON
+
+This updates release variables from JSON in a release variable.  A normal use-case for this is parsing json from a webhook call into release variables.  For example, a git webhook call to start a release.  Values from the webhook POST body could be used to update release variables.
+
+### Variable Names
+
+Complex JSON objects build a variable name from their path in the JSON object. For example, here is a sample commit message from BitBucket...
+
+```json
+{
+    "size": 2,
+    "limit": 25,
+    "isLastPage": true,
+    "values": [
+      {
+        "id": "01f9c8680e9db9888463b61e423b7b1d18a5c2c1",
+        "displayId": "01f9c86",
+        "author": {
+          "name": "Seb Ruiz",
+          "emailAddress": "sruiz@atlassian.com"
+        },
+        "authorTimestamp": 1334730200000,
+        "message": "NONE: Add groovy as java synhi\n+review @aahmed",
+        "parents": [
+          {
+            "id": "06a499d51107533a4f24a3620280edbb342d89b7",
+            "displayId": "06a499d"
+          }
+        ],
+        "attributes": {}
+      },
+      {
+        "id": "c9d6630b88143dab6a922c5cffe931dae68a612a",
+        "displayId": "c9d6630",
+        "author": {
+          "name": "Pierre-Etienne Poirot",
+          "emailAddress": "pepoirot@atlassian.com"
+        }
+      }
+    ],
+    "start": 0,
+    "filter": null,
+    "nextPageStart": 2
+  }
+  ```
+
+Say you wanted the first author's email address in a release variable.  You can see this is the first element in the 'values' array.  The email address is within the 'author' object.  The JSON parser would build a name from as follows:
+
+```bash
+<name prefix>.values.0.author.emailAddress
+```
+
+where:
+* \<name prefix\>: an optional task property.  It lets you partition variable names to a namespace.
+* values: name of json array
+* 0: the first array index.  A following array element would be '1', then '2', and so on.
+* author: the json object name
+* emailAddress: the json string name
+
+
+## Developers
 
 Build and package the plugins with...
 

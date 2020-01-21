@@ -1,4 +1,3 @@
-
 #
 # Copyright 2020 XEBIALABS
 #
@@ -9,24 +8,35 @@
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
-version: '2'
-services:
-  xlr:
-    image: xebialabs/xl-release:8.5
-    container_name: xlr
-    volumes:
-      - ~/xl-licenses/xl-release-license.lic:/opt/xebialabs/xl-release-server/conf/xl-release-license.lic
-      - ./../../../../build/libs/:/opt/xebialabs/xl-release-server/default-plugins/__local__/
-      - ./../../../../build/reports/tests/log/:/opt/xebialabs/xl-release-server/log/
-    environment:
-      ADMIN_PASSWORD: "admin"
-    ports:
-      - "15516:5516"
-    
-  mockserver:
-    build: ../mockserver
-    container_name: mockserver
-    ports:
-      - "5099:5000"
-    volumes:
-      - ./../mockserver/app/:/mockserver/
+import sys
+import logging
+import re
+
+from variablesetter.common import set_variables
+
+from setvariables.parsers import JsonParser
+
+from com.xebialabs.xlrelease.api.v1 import ReleaseApi
+from com.xebialabs.xlrelease.api.v1.forms import Variable
+
+logging.basicConfig(filename='log/plugin.log',
+                            filemode='a',
+                            format='%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s',
+                            datefmt='%H:%M:%S',
+                            level=logging.DEBUG)
+
+def main():
+    # We will only update values for existing variables. We do not create new ones
+    allExistingVars = releaseApi.getVariables(release.id)
+
+    logging.debug("allExistingVars = %s" % allExistingVars)
+    logging.debug("type(allExistingVars) = %s" % type(allExistingVars))
+
+    newVars = JsonParser.getVariablesList(namePrefix, source) # DynamicVariables
+    logging.debug("newVars = %s" % newVars)
+
+    set_variables(releaseApi, newVars, allExistingVars)
+
+
+if __name__ == '__main__' or __name__ == '__builtin__':
+    main()

@@ -66,6 +66,7 @@ dependencies {
   compile 'com.google.guava:guava:23.0'
 
   compile group: 'org.yaml', name: 'snakeyaml', version: '1.24'
+  compile group: 'javax.json', name: 'javax.json-api', version: '1.1.4'
 }
 
 

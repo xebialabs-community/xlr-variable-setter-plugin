@@ -1,5 +1,5 @@
 /**
- * Copyright 2019 XEBIALABS
+ * Copyright 2020 XEBIALABS
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
  *
@@ -13,46 +13,66 @@ package setvariables.parsers;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
-import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Properties;
-import java.util.List;
 
-import setvariables.DynamicVariable;
 import setvariables.DynamicVariables;
 
-public class PropertiesParser {
-
-    public static DynamicVariables getVariablesList(String input) {
+public class PropertiesParser 
+{
+    public static DynamicVariables getVariablesList(String input) throws IOException 
+    {
+        DynamicVariables dynamicVars = new DynamicVariables();
         
         Properties prop = new Properties();
-        DynamicVariables dynamicVars = new DynamicVariables();
-        List<DynamicVariable> theList = new ArrayList<DynamicVariable>();
-        
         Reader reader = new StringReader(input);
-        try {
+        try 
+        {
             prop.load(reader);
 
             Enumeration<?> e = prop.propertyNames();
-            while (e.hasMoreElements()) {
+            while (e.hasMoreElements()) 
+            {
                 String key = (String) e.nextElement();
                 String value = prop.getProperty(key);
-                DynamicVariable dynVar = new DynamicVariable();
-                dynVar.setKey(key);
-                dynVar.setValue(value);
-                dynVar.setType("xlrelease.StringVariable");
-                theList.add(dynVar);
+
+                boolean isSet = false;
+
+                // try to convert to integer
+                try
+                {
+                    Integer i = Integer.parseInt(value);
+                    dynamicVars.addVariable(key, i, DynamicVariables.TYPE_INTEGER);
+                    isSet = true;
+                } catch (Exception ex) {}
+
+                // try to convert to boolean
+                if ( isSet == false )
+                {
+                    try
+                    {
+                        Boolean b = Boolean.parseBoolean(value);
+                        dynamicVars.addVariable(key, b, DynamicVariables.TYPE_BOOLEAN);
+                        isSet = true;
+                    } catch (Exception ex) {}
+                }
+
+                // assume string
+                if ( isSet == false )
+                {
+                    dynamicVars.addVariable(key, value, DynamicVariables.TYPE_STRING);
+                }
             }
-            
-        } catch (IOException e) {
-            
-        } finally{
-            if (reader != null){
+           
+        } 
+        finally
+        {
+            if (reader != null)
+            {
                 try {reader.close();} catch (IOException ex){}
             }
         }
-        dynamicVars.setVariables(theList);
+
         return dynamicVars;
     }
-
 }

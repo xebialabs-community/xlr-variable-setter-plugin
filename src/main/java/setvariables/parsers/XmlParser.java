@@ -1,5 +1,5 @@
 /**
- * Copyright 2019 XEBIALABS
+ * Copyright 2020 XEBIALABS
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
  *
@@ -49,22 +49,15 @@ public class XmlParser {
         XPath xPath =  XPathFactory.newInstance().newXPath();
         String expression = "//*[not(*)]";
 
-        List<DynamicVariable> theList = new ArrayList<DynamicVariable>();
+        DynamicVariables dynamicVars = new DynamicVariables();
         
         NodeList nodeList = (NodeList) xPath.compile(expression).evaluate(doc, XPathConstants.NODESET);
         for(int i = 0 ; i < nodeList.getLength(); i++) 
         {
-            DynamicVariable dynVar = new DynamicVariable();
             //Set key to string that represents the parent node names and this node name separated by underscores
-            dynVar.setKey(getPath(nodeList.item(i)));
-            dynVar.setValue(nodeList.item(i).getTextContent());
-            dynVar.setType("xlrelease.StringVariable");
-            theList.add(dynVar);
+            dynamicVars.addVariable(getPath(nodeList.item(i)), nodeList.item(i).getTextContent(), DynamicVariables.TYPE_STRING);
         }
-    
-        DynamicVariables dynamicVars = new DynamicVariables();
-        dynamicVars.setVariables(theList);
-        return dynamicVars;
+            return dynamicVars;
     }
 
     private static String getPath(Node node) {
