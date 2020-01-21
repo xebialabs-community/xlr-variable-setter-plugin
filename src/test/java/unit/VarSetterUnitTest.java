@@ -43,12 +43,10 @@ public class VarSetterUnitTest {
     @Test
     public void testXMLParser() throws Exception {
         DynamicVariables dv = XmlParser.getVariablesList(testXML);
+
         System.out.println("The DynamicVariable list size = "+dv.getVariables().size());
-        for(int i = 0 ; i < dv.getVariables().size(); i++) 
-        {
-            DynamicVariable dynVar = (DynamicVariable) dv.getVariables().get(i);
-            System.out.println("Key = "+dynVar.getKey()+", Value = "+dynVar.getValue());   
-        }
+        System.out.println(dv.toString());
+
         assertTrue(dv.getVariables().size() == 11);
         System.out.println("testXMLParser passed");
     }

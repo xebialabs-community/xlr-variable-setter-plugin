@@ -23,6 +23,11 @@ public class DynamicVariables
 
     private Map<String,DynamicVariable> variables = new HashMap<String,DynamicVariable>();
 
+    public Map<String,DynamicVariable> getVariables()
+    {
+        return this.variables;
+    }
+    
     public void addVariable(String key, Object value, String type)
     {
         DynamicVariable dv = new DynamicVariable();
