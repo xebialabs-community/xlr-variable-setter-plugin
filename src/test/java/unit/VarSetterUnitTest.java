@@ -17,6 +17,7 @@ import org.junit.Test;
 import setvariables.DynamicVariable;
 import setvariables.DynamicVariables;
 import setvariables.parsers.XmlParser;
+import setvariables.parsers.JsonParser;
 
 public class VarSetterUnitTest {
 
@@ -40,6 +41,15 @@ public class VarSetterUnitTest {
     +"</dependencies>"  
     +"</project>";
 
+    final static String testJSON = "{\"size\":2,\"limit\":25,\"isLastPage\":true,\"values\":"
+    +"[{\"id\":\"01f9c8680e9db9888463b61e423b7b1d18a5c2c1\",\"displayId\":\"01f9c86\",\"author\":"
+    +"{\"name\":\"Seb Ruiz\",\"emailAddress\":\"sruiz@atlassian.com\"}"
+    +",\"authorTimestamp\":1334730200000,\"message\":\"NONE: Add groovy as java synhi\\n+review @aahmed\",\"parents\":"
+    +"[{\"id\":\"06a499d51107533a4f24a3620280edbb342d89b7\",\"displayId\":\"06a499d\"}],\"attributes\":{}},"
+    +"{\"id\":\"c9d6630b88143dab6a922c5cffe931dae68a612a\",\"displayId\":\"c9d6630\",\"author\":"
+    +"{\"name\":\"Pierre-Etienne Poirot\",\"emailAddress\":\"pepoirot@atlassian.com\"}}]"
+    +",\"start\":0,\"filter\":null,\"nextPageStart\":2}";
+
     @Test
     public void testXMLParser() throws Exception {
         DynamicVariables dv = XmlParser.getVariablesList(testXML);
@@ -50,5 +60,18 @@ public class VarSetterUnitTest {
         assertTrue(dv.getVariables().size() == 11);
         System.out.println("testXMLParser passed");
     }
+
+    
+    @Test
+    public void testJSONParser() throws Exception {
+        DynamicVariables dv = JsonParser.getVariablesList("", testJSON);
+        
+        System.out.println("The DynamicVariable list size = "+dv.getVariables().size());
+        System.out.println(dv.toString());
+
+        assertTrue(dv.getVariables().size() == 17);
+        System.out.println("testJsonParser passed");
+    }
+    
 
 }

@@ -27,6 +27,8 @@ repositories {
   }
 }
 
+version = '1.2.0'
+
 test {
     // Auto detected Unit tests only, exclude the end to end integration test
     exclude '**/*IntegrationTest.class'
@@ -54,6 +56,7 @@ task integrationTest(type: Test, dependsOn: ['build']) {
 }
 
 dependencies {
+  testCompile group: 'javax.json', name: 'javax.json-api', version: '1.1.4'
   // Place rest-assured before JUnit dependency to make sure correct Hamcrest is used
   testCompile 'io.rest-assured:rest-assured:3.2.0'
   testCompile "junit:junit:4.11"
@@ -62,11 +65,14 @@ dependencies {
   testCompile "org.testcontainers:testcontainers:1.11.3"
   testCompile group: 'org.slf4j', name: 'slf4j-simple', version: '1.8.0-beta2'
   testCompile group: 'org.skyscreamer', name: 'jsonassert', version: '1.5.0'
+  
 
   compile 'com.google.guava:guava:23.0'
 
   compile group: 'org.yaml', name: 'snakeyaml', version: '1.24'
   compile group: 'javax.json', name: 'javax.json-api', version: '1.1.4'
+  compile group: 'org.glassfish', name: 'javax.json', version: '1.1.4'
+
 }
 
 

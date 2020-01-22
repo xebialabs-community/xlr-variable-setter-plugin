@@ -16,6 +16,8 @@ import java.util.Set;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
+import javax.json.JsonString;
+import javax.json.JsonNumber;
 import javax.json.JsonValue;
 import javax.json.JsonArray;
 
@@ -57,15 +59,23 @@ public class JsonParser
         }
         else if ( jsonVal.getValueType().equals(JsonValue.ValueType.NUMBER) )
         {
-            dynamicVars.addVariable(prefix, jsonVal.toString(), DynamicVariables.TYPE_INTEGER);
+            dynamicVars.addVariable(prefix, toObject(jsonVal), DynamicVariables.TYPE_INTEGER);
         }
         else if ( jsonVal.getValueType().equals(JsonValue.ValueType.STRING) )
         {
-            dynamicVars.addVariable(prefix, jsonVal.toString(), DynamicVariables.TYPE_STRING);
+            dynamicVars.addVariable(prefix, toObject(jsonVal), DynamicVariables.TYPE_STRING);
+        }
+        else if ( jsonVal.getValueType().equals(JsonValue.ValueType.TRUE) )
+        {
+            dynamicVars.addVariable(prefix, toObject(jsonVal), DynamicVariables.TYPE_BOOLEAN);
+        }
+        else if ( jsonVal.getValueType().equals(JsonValue.ValueType.FALSE) )
+        {
+            dynamicVars.addVariable(prefix, toObject(jsonVal), DynamicVariables.TYPE_BOOLEAN);
         }
         else
         {
-            System.out.println("Unknown json type: " + jsonVal.getValueType());
+            System.out.println("Unknown json type: " + jsonVal.getValueType() + ", value = "+toObject(jsonVal)+ " ,keyPath = "+prefix);
         }
     }
 
@@ -76,4 +86,25 @@ public class JsonParser
         if ( prefix.length() > 0 ) prefix = prefix + ".";
         return prefix + key;
     }
+
+    protected static Object toObject(JsonValue jsonValue) {
+        switch (jsonValue.getValueType()) {
+        case ARRAY:
+          return jsonValue.toString();
+        case OBJECT:
+          return jsonValue.toString();
+        case STRING:
+          return ((JsonString) jsonValue).getString();
+        case NUMBER:
+          return ((JsonNumber) jsonValue).numberValue();
+        case TRUE:
+          return true;
+        case FALSE:
+          return false;
+        case NULL:
+          return null;
+        default:
+          return jsonValue.toString();
+        }
+      }
 }

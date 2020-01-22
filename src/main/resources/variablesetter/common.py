@@ -33,6 +33,11 @@ def set_variables(releaseApi, newVars, allExistingVars, isPropertyType=False):
         # We don't create new vars, make sure this is an existing Release Variable
         newVar = newVars.get(val.key)
 
+        # Values from property files will always be a string type so we will
+        #     skip comparing the newVar type and the existing var type. If the 
+        #     existing var type is not String, we will let XLR do the conversion
+        #     when the existing var is set with the new value retrieved from 
+        #     the properties file. 
         if newVar and (isPropertyType or newVar.getType() == val.type):
             val.value = newVar.getValue()
             releaseApi.updateVariable(val)
@@ -40,4 +45,3 @@ def set_variables(releaseApi, newVars, allExistingVars, isPropertyType=False):
                 logging.info("  setting: %s = %s" % (val.key, str(val.value)))
             else:
                 logging.info("  setting: %s = *******" % val.key)
-    
