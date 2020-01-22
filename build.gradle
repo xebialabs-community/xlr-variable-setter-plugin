@@ -36,7 +36,7 @@ test {
 }
  
 
-task integrationTest(type: Test, dependsOn: ['assemble']) {
+task integrationTest(type: Test, dependsOn: ['build']) {
     // do not automatically scan for tests
     scanForTestClasses = false 
     // explicitly include the integration test

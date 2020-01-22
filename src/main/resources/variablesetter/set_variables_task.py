@@ -44,6 +44,7 @@ def main():
     logging.debug("The filtered list = %s" % list(filesToProcessItr))
     
     for fileName in filesToProcessItr:
+        isPropertyType = False
         fileType = os.path.splitext(fileName)[1]
         url = targetURL.replace(":filename:", fileName)
         logging.debug("The new URL is "+url)
@@ -56,6 +57,7 @@ def main():
             newVars = YamlParser.getVariablesList(data)
         elif fileType in listOfPropertiesTypes:
             newVars = PropertiesParser.getVariablesList(data)
+            isPropertyType = True
         elif fileType in listOfXmlTypes:
             newVars = XmlParser.getVariablesList(data)
             logging.debug("Finished with the xml parser")
@@ -64,7 +66,7 @@ def main():
             logging.error("Unknown file type: "+fileType)
             sys.exit(1)
 
-        set_variables(releaseApi, newVars, allExistingVars)
+        set_variables(releaseApi, newVars, allExistingVars, isPropertyType)
 
 
 def getData(url):

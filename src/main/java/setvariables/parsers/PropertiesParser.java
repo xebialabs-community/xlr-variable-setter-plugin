@@ -13,66 +13,46 @@ package setvariables.parsers;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Properties;
+import java.util.List;
 
+import setvariables.DynamicVariable;
 import setvariables.DynamicVariables;
 
-public class PropertiesParser 
-{
-    public static DynamicVariables getVariablesList(String input) throws IOException 
-    {
-        DynamicVariables dynamicVars = new DynamicVariables();
+public class PropertiesParser {
+
+    public static DynamicVariables getVariablesList(String input) {
         
         Properties prop = new Properties();
+        DynamicVariables dynamicVars = new DynamicVariables();
+        List<DynamicVariable> theList = new ArrayList<DynamicVariable>();
+        
         Reader reader = new StringReader(input);
-        try 
-        {
+        try {
             prop.load(reader);
 
             Enumeration<?> e = prop.propertyNames();
-            while (e.hasMoreElements()) 
-            {
+            while (e.hasMoreElements()) {
                 String key = (String) e.nextElement();
                 String value = prop.getProperty(key);
-
-                boolean isSet = false;
-
-                // try to convert to integer
-                try
-                {
-                    Integer i = Integer.parseInt(value);
-                    dynamicVars.addVariable(key, i, DynamicVariables.TYPE_INTEGER);
-                    isSet = true;
-                } catch (Exception ex) {}
-
-                // try to convert to boolean
-                if ( isSet == false )
-                {
-                    try
-                    {
-                        Boolean b = Boolean.parseBoolean(value);
-                        dynamicVars.addVariable(key, b, DynamicVariables.TYPE_BOOLEAN);
-                        isSet = true;
-                    } catch (Exception ex) {}
-                }
-
-                // assume string
-                if ( isSet == false )
-                {
-                    dynamicVars.addVariable(key, value, DynamicVariables.TYPE_STRING);
-                }
+                DynamicVariable dynVar = new DynamicVariable();
+                dynVar.setKey(key);
+                dynVar.setValue(value);
+                dynVar.setType("xlrelease.StringVariable");
+                theList.add(dynVar);
             }
-           
-        } 
-        finally
-        {
-            if (reader != null)
-            {
+            
+        } catch (IOException e) {
+            
+        } finally{
+            if (reader != null){
                 try {reader.close();} catch (IOException ex){}
             }
         }
-
+        dynamicVars.setVariables(theList);
         return dynamicVars;
     }
+
 }

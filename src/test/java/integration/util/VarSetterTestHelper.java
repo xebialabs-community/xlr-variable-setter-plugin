@@ -66,7 +66,7 @@ public final class VarSetterTestHelper {
         }
     }
 
-    public static org.json.JSONObject getVarSetterReleaseResult() throws InterruptedException{
+    public static org.json.JSONObject getVarSetterReleaseResult() throws Exception{
         org.json.JSONObject releaseResultJSON = null;
         String responseId = "";
         String releaseResultStr = "";
@@ -106,9 +106,9 @@ public final class VarSetterTestHelper {
             } catch (Exception e) {
                 System.out.println("FAILED: EXCEPTION: "+e.getMessage());
                 e.printStackTrace();
+                throw e;
             }        
         }
-        // Return the comments attached to the finished release so we can test for success
         return releaseResultJSON;
     }
 

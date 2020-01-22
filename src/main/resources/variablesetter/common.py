@@ -22,7 +22,7 @@ logging.basicConfig(filename='log/plugin.log',
                             level=logging.DEBUG)
 
 # Update XLR variable values
-def set_variables(releaseApi, newVars, allExistingVars):
+def set_variables(releaseApi, newVars, allExistingVars, isPropertyType=False):
     varLen = len(allExistingVars)
     logging.debug("processing %s variables" % varLen)
 
@@ -33,7 +33,7 @@ def set_variables(releaseApi, newVars, allExistingVars):
         # We don't create new vars, make sure this is an existing Release Variable
         newVar = newVars.get(val.key)
 
-        if newVar and newVar.getType() == val.type:
+        if newVar and (isPropertyType or newVar.getType() == val.type):
             val.value = newVar.getValue()
             releaseApi.updateVariable(val)
             if val.type != DynamicVariables.TYPE_PASSWORD:

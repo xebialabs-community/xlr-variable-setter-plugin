@@ -10,8 +10,8 @@
 
 package setvariables;
 
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class DynamicVariables 
@@ -23,9 +23,16 @@ public class DynamicVariables
 
     private Map<String,DynamicVariable> variables = new HashMap<String,DynamicVariable>();
 
-    public Map<String,DynamicVariable> getVariables()
+    public Collection<DynamicVariable> getVariables()
     {
-        return this.variables;
+        return this.variables.values();
+    }
+
+    public void setVariables(Collection<DynamicVariable> variables){
+        this.variables.clear();
+        for (DynamicVariable dv : variables){
+            this.variables.put(dv.getKey(), dv);
+        }
     }
     
     public void addVariable(String key, Object value, String type)
