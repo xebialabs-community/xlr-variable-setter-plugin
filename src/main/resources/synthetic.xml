@@ -33,13 +33,20 @@
             description = "If checked, the task will fail if any one of the files listed above is not found."/>
     </type>
  
-    <type type="variableSetter.SetVariablesFromJSON" extends="xlrelease.PythonScript" label="Set Vars From JSON">
+    <type type="variableSetter.SetVariablesFromVariableSource" extends="xlrelease.PythonScript" label="Set Vars From Var Source">
         <property name="iconLocation" default="icons/icon.png" hidden="true" />
-        <property name="scriptLocation" hidden="true" default="variablesetter/set_variables_from_json_task.py" />
-        <property name="source" category="input" required="true" label="Source JSON" 
-            description="Select the variable that holds the JSON to parse."/>
+        <property name="scriptLocation" hidden="true" default="variablesetter/set_variables_from_variable_source_task.py" />
+        <property name="source" category="input" required="true" label="Source Release Variable" 
+            description="Select the variable that holds the data to parse."/>
+        <property name="dataFormat" kind="enum" category="input" required="true" label="Data Format of Source" 
+            description="Select the format of the data stored in the source variable.">
+            <enum-values>
+                <value>JSON</value>
+                <value>XML</value>
+            </enum-values>
+        </property>
         <property name="namePrefix" category="input" required="false" label="Name Prefix"
-            description="Variables names built from the json path will be prefixed with this value." />
+            description="Optional variable name prefix. Use this to give the variables to be set a meaningful namespace. See the plugin README for information about how to name those variables." />
     </type>
  
 </synthetic>

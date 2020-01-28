@@ -15,11 +15,12 @@ import re
 from variablesetter.common import set_variables
 
 from setvariables.parsers import JsonParser
+from setvariables.parsers import XmlParser
 
 from com.xebialabs.xlrelease.api.v1 import ReleaseApi
 from com.xebialabs.xlrelease.api.v1.forms import Variable
 
-logging.basicConfig(filename='log/plugin.log',
+logging.basicConfig(filename='log/varSetterPlugin.log',
                             filemode='a',
                             format='%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s',
                             datefmt='%H:%M:%S',
@@ -32,7 +33,12 @@ def main():
     logging.debug("allExistingVars = %s" % allExistingVars)
     logging.debug("type(allExistingVars) = %s" % type(allExistingVars))
 
-    newVars = JsonParser.getVariablesList(namePrefix, source) # DynamicVariables
+    newVars = []
+    if dataFormat == 'XML':
+        newVars = XmlParser.getVariablesList(namePrefix, source) # DynamicVariables
+    elif dataFormat == 'JSON':
+        newVars = JsonParser.getVariablesList(namePrefix, source) # DynamicVariables
+    
     logging.debug("newVars = %s" % newVars)
 
     set_variables(releaseApi, newVars, allExistingVars)

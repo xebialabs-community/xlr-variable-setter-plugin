@@ -10,7 +10,7 @@
     "releaseTriggers": [],
     "teams": [
       {
-        "id": "Applications/Release918f4190cec44402b868f39e44561068/Teamcfa618e0299549f091257b1052cdfd84",
+        "id": "Applications/Release918f4190cec44402b868f39e44561068/Team12078cf1e1164fe984f3fee4c04ece43",
         "type": "xlrelease.Team",
         "teamName": "Template Owner",
         "members": [
@@ -27,7 +27,7 @@
         ]
       },
       {
-        "id": "Applications/Release918f4190cec44402b868f39e44561068/Teamf4f7d21f3b5b460a81acc5e97e6a2b22",
+        "id": "Applications/Release918f4190cec44402b868f39e44561068/Teamaf1a380ef0c14d96972aee7ffe4acc4e",
         "type": "xlrelease.Team",
         "teamName": "Release Admin",
         "members": [],
@@ -62,7 +62,7 @@
           {
             "id": "Applications/Release918f4190cec44402b868f39e44561068/Phase18c422d69e214500880dc40547ace04f/Task3cf14cdfbf0d472a8477ff4d539155c8",
             "type": "xlrelease.CustomScriptTask",
-            "title": "setVariables",
+            "title": "setVarsFromRemoteFiles",
             "flagStatus": "OK",
             "overdueNotified": false,
             "comments": [],
@@ -99,15 +99,17 @@
                 "file.bad",
                 "empty.yml",
                 "test${version}.properties",
-                "testPom.xml"
+                "testPom.xml",
+                "git_commit.json"
               ],
               "failIfFileNotFound": false
-            }
+            },
+            "keepPreviousOutputPropertiesOnRetry": false
           },
           {
-            "id": "Applications/Release918f4190cec44402b868f39e44561068/Phase18c422d69e214500880dc40547ace04f/Task6145466bde0e42ffb3561a29a2daec59",
+            "id": "Applications/Release918f4190cec44402b868f39e44561068/Phase18c422d69e214500880dc40547ace04f/Task5a3578d2b35d4e338376047741973d38",
             "type": "xlrelease.CustomScriptTask",
-            "title": "setVariablesFromJSON",
+            "title": "setVarsFromVarSource-JSON",
             "flagStatus": "OK",
             "overdueNotified": false,
             "comments": [],
@@ -129,12 +131,48 @@
             "checkAttributes": false,
             "watchers": [],
             "pythonScript": {
-              "id": "Applications/Release918f4190cec44402b868f39e44561068/Phase18c422d69e214500880dc40547ace04f/Task6145466bde0e42ffb3561a29a2daec59/PythonScript",
-              "type": "variableSetter.SetVariablesFromJSON",
-              "customScriptTask": "Applications/Release918f4190cec44402b868f39e44561068/Phase18c422d69e214500880dc40547ace04f/Task6145466bde0e42ffb3561a29a2daec59",
-              "source": "${sourceJSONforAuthorEmailAddress}",
-              "namePrefix": "firstAuthorEmailAddress"
-            }
+              "id": "Applications/Release918f4190cec44402b868f39e44561068/Phase18c422d69e214500880dc40547ace04f/Task5a3578d2b35d4e338376047741973d38/PythonScript",
+              "type": "variableSetter.SetVariablesFromVariableSource",
+              "customScriptTask": "Applications/Release918f4190cec44402b868f39e44561068/Phase18c422d69e214500880dc40547ace04f/Task5a3578d2b35d4e338376047741973d38",
+              "source": "${bitbucketResponseSourceJSON}",
+              "dataFormat": "JSON",
+              "namePrefix": "bitbucket"
+            },
+            "keepPreviousOutputPropertiesOnRetry": false
+          },
+          {
+            "id": "Applications/Release918f4190cec44402b868f39e44561068/Phase18c422d69e214500880dc40547ace04f/Taskfb890cae50d9458695f3d5694e983baf",
+            "type": "xlrelease.CustomScriptTask",
+            "title": "setVarsFromVarSource-XML",
+            "flagStatus": "OK",
+            "overdueNotified": false,
+            "comments": [],
+            "container": "Applications/Release918f4190cec44402b868f39e44561068/Phase18c422d69e214500880dc40547ace04f",
+            "facets": [],
+            "attachments": [],
+            "status": "PLANNED",
+            "waitForScheduledStartDate": true,
+            "delayDuringBlackout": false,
+            "postponedDueToBlackout": false,
+            "hasBeenFlagged": false,
+            "hasBeenDelayed": false,
+            "taskFailureHandlerEnabled": false,
+            "failuresCount": 0,
+            "variableMapping": {},
+            "tags": [],
+            "dueSoonNotified": false,
+            "locked": false,
+            "checkAttributes": false,
+            "watchers": [],
+            "pythonScript": {
+              "id": "Applications/Release918f4190cec44402b868f39e44561068/Phase18c422d69e214500880dc40547ace04f/Taskfb890cae50d9458695f3d5694e983baf/PythonScript",
+              "type": "variableSetter.SetVariablesFromVariableSource",
+              "customScriptTask": "Applications/Release918f4190cec44402b868f39e44561068/Phase18c422d69e214500880dc40547ace04f/Taskfb890cae50d9458695f3d5694e983baf",
+              "source": "${pomXMLSource}",
+              "dataFormat": "XML",
+              "namePrefix": "pom"
+            },
+            "keepPreviousOutputPropertiesOnRetry": false
           }
         ],
         "release": "Applications/Release918f4190cec44402b868f39e44561068",
@@ -151,7 +189,9 @@
         "type": "xlrelease.StringVariable",
         "key": "testYmlVarString",
         "requiresValue": false,
-        "showOnReleaseStart": false
+        "showOnReleaseStart": false,
+        "inherited": false,
+        "multiline": false
       },
       {
         "id": "Applications/Release918f4190cec44402b868f39e44561068/Variable33985f41752b4baeac74cde2a857d121",
@@ -159,6 +199,7 @@
         "key": "testYmlVarBoolean",
         "requiresValue": false,
         "showOnReleaseStart": false,
+        "inherited": false,
         "value": false
       },
       {
@@ -167,6 +208,7 @@
         "key": "testYmlVarNumber",
         "requiresValue": false,
         "showOnReleaseStart": false,
+        "inherited": false,
         "value": 0
       },
       {
@@ -175,6 +217,7 @@
         "key": "testPropIntVar1",
         "requiresValue": false,
         "showOnReleaseStart": false,
+        "inherited": false,
         "value": 0
       },
       {
@@ -182,7 +225,9 @@
         "type": "xlrelease.StringVariable",
         "key": "testPropStrVar1",
         "requiresValue": false,
-        "showOnReleaseStart": false
+        "showOnReleaseStart": false,
+        "inherited": false,
+        "multiline": false
       },
       {
         "id": "Applications/Release918f4190cec44402b868f39e44561068/Variable73cdb287206145808438ad24cfc67a96",
@@ -190,6 +235,7 @@
         "key": "testPropIntVar2",
         "requiresValue": false,
         "showOnReleaseStart": false,
+        "inherited": false,
         "value": 0
       },
       {
@@ -197,7 +243,9 @@
         "type": "xlrelease.StringVariable",
         "key": "testPropStrVar2",
         "requiresValue": false,
-        "showOnReleaseStart": false
+        "showOnReleaseStart": false,
+        "inherited": false,
+        "multiline": false
       },
       {
         "id": "Applications/Release918f4190cec44402b868f39e44561068/Variable8ba38da4f318451ca2363c95f0cf5b74",
@@ -205,6 +253,7 @@
         "key": "testPropBoolean",
         "requiresValue": false,
         "showOnReleaseStart": false,
+        "inherited": false,
         "value": false
       },
       {
@@ -212,7 +261,9 @@
         "type": "xlrelease.StringVariable",
         "key": "testYamlStr",
         "requiresValue": false,
-        "showOnReleaseStart": false
+        "showOnReleaseStart": false,
+        "inherited": false,
+        "multiline": false
       },
       {
         "id": "Applications/Release918f4190cec44402b868f39e44561068/Variableffdd0a75ac6e460d805bbed82132c5e8",
@@ -220,6 +271,7 @@
         "key": "testYamlBoolean",
         "requiresValue": false,
         "showOnReleaseStart": false,
+        "inherited": false,
         "value": false
       },
       {
@@ -228,6 +280,7 @@
         "key": "testYamlNumber",
         "requiresValue": false,
         "showOnReleaseStart": false,
+        "inherited": false,
         "value": 0
       },
       {
@@ -235,7 +288,9 @@
         "type": "xlrelease.StringVariable",
         "key": "test5Var",
         "requiresValue": false,
-        "showOnReleaseStart": false
+        "showOnReleaseStart": false,
+        "inherited": false,
+        "multiline": false
       },
       {
         "id": "Applications/Release918f4190cec44402b868f39e44561068/Variable0581eb5cfe3c4a3d9e44bb6da3484755",
@@ -243,43 +298,97 @@
         "key": "version",
         "requiresValue": false,
         "showOnReleaseStart": false,
-        "value": "5"
+        "inherited": false,
+        "value": "5",
+        "multiline": false
       },
       {
         "id": "Applications/Release918f4190cec44402b868f39e44561068/Variable852dea63efbc49c183c0d61f3da707f0",
         "type": "xlrelease.StringVariable",
         "key": "project_groupId",
         "requiresValue": false,
-        "showOnReleaseStart": false
+        "showOnReleaseStart": false,
+        "inherited": false,
+        "multiline": false
       },
       {
         "id": "Applications/Release918f4190cec44402b868f39e44561068/Variable47e20363b04b42fb9426f554383ecc37",
         "type": "xlrelease.StringVariable",
         "key": "project_artifactId",
         "requiresValue": false,
-        "showOnReleaseStart": false
+        "showOnReleaseStart": false,
+        "inherited": false,
+        "multiline": false
       },
       {
         "id": "Applications/Release918f4190cec44402b868f39e44561068/Variable3d9312c1780548ef8a1131cb9d4da6d7",
         "type": "xlrelease.StringVariable",
         "key": "project_version",
         "requiresValue": false,
-        "showOnReleaseStart": false
+        "showOnReleaseStart": false,
+        "inherited": false,
+        "multiline": false
       },
       {
         "id": "Applications/Release918f4190cec44402b868f39e44561068/Variable02fcfef2729f4724b360d6e1c3638d4b",
         "type": "xlrelease.StringVariable",
-        "key": "firstAuthorEmailAddress.values.0.author.emailAddress",
+        "key": "bitbucket_values_0_author_emailAddress",
         "requiresValue": false,
-        "showOnReleaseStart": false
+        "showOnReleaseStart": false,
+        "description": "Release Variable that will be set by the 'Set Vars From JSON' task",
+        "inherited": false,
+        "multiline": false
       },
       {
         "id": "Applications/Release918f4190cec44402b868f39e44561068/Variablec16f148c6063406ebf1798ccb4758696",
         "type": "xlrelease.StringVariable",
-        "key": "sourceJSONforAuthorEmailAddress",
+        "key": "bitbucketResponseSourceJSON",
         "requiresValue": false,
         "showOnReleaseStart": false,
-        "value": "{\"size\":2,\"limit\":25,\"isLastPage\":true,\"values\":[{\"id\":\"01f9c8680e9db9888463b61e423b7b1d18a5c2c1\",\"displayId\":\"01f9c86\",\"author\":{\"name\":\"Seb Ruiz\",\"emailAddress\":\"sruiz@atlassian.com\"},\"authorTimestamp\":1334730200000,\"message\":\"NONE: Add groovy as java synhi\\n+review @aahmed\",\"parents\":[{\"id\":\"06a499d51107533a4f24a3620280edbb342d89b7\",\"displayId\":\"06a499d\"}],\"attributes\":{}},{\"id\":\"c9d6630b88143dab6a922c5cffe931dae68a612a\",\"displayId\":\"c9d6630\",\"author\":{\"name\":\"Pierre-Etienne Poirot\",\"emailAddress\":\"pepoirot@atlassian.com\"}}],\"start\":0,\"filter\":null,\"nextPageStart\":2}"
+        "description": "JSON source for 'Set Vars From JSON' task",
+        "inherited": false,
+        "value": "{\"size\":2,\"limit\":25,\"isLastPage\":true,\"values\":[{\"id\":\"01f9c8680e9db9888463b61e423b7b1d18a5c2c1\",\"displayId\":\"01f9c86\",\"author\":{\"name\":\"Seb Ruiz\",\"emailAddress\":\"sruiz@atlassian.com\"},\"authorTimestamp\":1334730200000,\"message\":\"NONE: Add groovy as java synhi\\n+review @aahmed\",\"parents\":[{\"id\":\"06a499d51107533a4f24a3620280edbb342d89b7\",\"displayId\":\"06a499d\"}],\"attributes\":{}},{\"id\":\"c9d6630b88143dab6a922c5cffe931dae68a612a\",\"displayId\":\"c9d6630\",\"author\":{\"name\":\"Pierre-Etienne Poirot\",\"emailAddress\":\"pepoirot@atlassian.com\"}}],\"start\":0,\"filter\":null,\"nextPageStart\":2}",
+        "multiline": false
+      },
+      {
+        "id": "Applications/Release918f4190cec44402b868f39e44561068/Variablea30e5e3e296945f9aab7d53534f2a55c",
+        "type": "xlrelease.StringVariable",
+        "key": "bitbucket_values_1_author_emailAddress",
+        "requiresValue": false,
+        "showOnReleaseStart": false,
+        "description": "Another email address that will be set when the bitbucketResponseSourceJSON variable value is parsed.",
+        "inherited": false,
+        "multiline": false
+      },
+      {
+        "id": "Applications/Release918f4190cec44402b868f39e44561068/Variable5e5cb3065e5945b6a60888ca7e328cb6",
+        "type": "xlrelease.StringVariable",
+        "key": "pomXMLSource",
+        "requiresValue": false,
+        "showOnReleaseStart": false,
+        "description": "This is the XML Source that the Set Vars From Var Source task will use to set other variables.",
+        "inherited": false,
+        "value": "<project xmlns=\"http://maven.apache.org/POM/4.0.0\"   \nxmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"  \n  xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0   \nhttp://maven.apache.org/maven-v4_0_0.xsd\">  \n  \n  <modelVersion>4.0.0</modelVersion>  \n  <groupId>com.xebialabs</groupId>  \n  <artifactId>OrderProcessing</artifactId>  \n  <packaging>jar</packaging>  \n  <version>1.0.0</version>  \n  <name>OrderProcessing</name>  \n  <url>http://maven.apache.org</url>  \n  <dependencies>  \n    <dependency>  \n      <groupId>junit</groupId>  \n      <artifactId>junit</artifactId>  \n      <version>3.8.1</version>  \n      <scope>test</scope>  \n    </dependency>  \n  </dependencies>  \n</project>",
+        "multiline": true
+      },
+      {
+        "id": "Applications/Release918f4190cec44402b868f39e44561068/Variablec1a0206dcfd943b6a932064fbbef090a",
+        "type": "xlrelease.StringVariable",
+        "key": "pom_project_modelVersion",
+        "requiresValue": false,
+        "showOnReleaseStart": false,
+        "description": "This is the properly name variable that will be set when the Set Var from Vars-XML task is run.",
+        "inherited": false,
+        "multiline": false
+      },
+      {
+        "id": "Applications/Release918f4190cec44402b868f39e44561068/Variablec968cde3d048425c998d5735313bf0ee",
+        "type": "xlrelease.StringVariable",
+        "key": "values_1_attributes_jira-key_0",
+        "requiresValue": false,
+        "showOnReleaseStart": false,
+        "inherited": false,
+        "multiline": false
       }
     ],
     "calendarPublished": false,

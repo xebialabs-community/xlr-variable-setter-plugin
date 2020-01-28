@@ -19,11 +19,12 @@ from variablesetter.common import set_variables
 from setvariables.parsers import XmlParser
 from setvariables.parsers import YamlParser
 from setvariables.parsers import PropertiesParser
+from setvariables.parsers import JsonParser
 
 from com.xebialabs.xlrelease.api.v1 import ReleaseApi
 from com.xebialabs.xlrelease.api.v1.forms import Variable
 
-logging.basicConfig(filename='log/plugin.log',
+logging.basicConfig(filename='log/varSetterPlugin.log',
                             filemode='a',
                             format='%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s',
                             datefmt='%H:%M:%S',
@@ -33,6 +34,7 @@ logging.basicConfig(filename='log/plugin.log',
 listOfYamlTypes = ['.yaml' , '.yml']
 listOfPropertiesTypes = ['.properties']
 listOfXmlTypes = ['.xml']
+listOfJsonTypes = ['.json']
 
 def main():
     fileType = ""
@@ -40,11 +42,11 @@ def main():
     # We will only update values for existing variables. We do not create new ones
     allExistingVars = releaseApi.getVariables(release.id)
     # If it is a file type we can process, place in interator
-    filesToProcessItr = filter(lambda x: os.path.splitext(x)[1] in (listOfPropertiesTypes + listOfYamlTypes + listOfXmlTypes), fileNameList )
+    filesToProcessItr = filter(lambda x: os.path.splitext(x)[1] in (listOfPropertiesTypes + listOfYamlTypes + listOfXmlTypes +listOfJsonTypes), fileNameList )
     logging.debug("The filtered list = %s" % list(filesToProcessItr))
     
     for fileName in filesToProcessItr:
-        isPropertyType = False
+        ignoreDataType = False
         fileType = os.path.splitext(fileName)[1]
         url = targetURL.replace(":filename:", fileName)
         logging.debug("The new URL is "+url)
@@ -57,16 +59,18 @@ def main():
             newVars = YamlParser.getVariablesList(data)
         elif fileType in listOfPropertiesTypes:
             newVars = PropertiesParser.getVariablesList(data)
-            isPropertyType = True
+            ignoreDataType = True
         elif fileType in listOfXmlTypes:
             newVars = XmlParser.getVariablesList(data)
-            logging.debug("Finished with the xml parser")
+            ignoreDataType = True
+        elif fileType in listOfJsonTypes:
+            newVars = JsonParser.getVariablesList(data)
         else:
             # If no data was returned, skip this file
             logging.error("Unknown file type: "+fileType)
             sys.exit(1)
 
-        set_variables(releaseApi, newVars, allExistingVars, isPropertyType)
+        set_variables(releaseApi, newVars, allExistingVars, ignoreDataType)
 
 
 def getData(url):

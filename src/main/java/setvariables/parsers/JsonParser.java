@@ -25,6 +25,12 @@ import setvariables.DynamicVariables;
 
 public class JsonParser 
 {
+
+    public static DynamicVariables getVariablesList(String input)
+    {
+      return getVariablesList("", input);
+    }
+
     public static DynamicVariables getVariablesList(String namePrefix, String input)
     {
         DynamicVariables dynamicVars = new DynamicVariables();
@@ -83,7 +89,7 @@ public class JsonParser
     {
         if ( prefix == null ) prefix = "";
         if ( key == null || key.length() == 0 ) return prefix;
-        if ( prefix.length() > 0 ) prefix = prefix + ".";
+        if ( prefix.length() > 0 ) prefix = prefix + "_";
         return prefix + key;
     }
 

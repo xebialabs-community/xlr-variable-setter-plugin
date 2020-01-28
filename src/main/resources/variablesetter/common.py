@@ -15,14 +15,14 @@ from setvariables import DynamicVariables
 from com.xebialabs.xlrelease.api.v1 import ReleaseApi
 from com.xebialabs.xlrelease.api.v1.forms import Variable
 
-logging.basicConfig(filename='log/plugin.log',
+logging.basicConfig(filename='log/varSetterPlugin.log',
                             filemode='a',
                             format='%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s',
                             datefmt='%H:%M:%S',
                             level=logging.DEBUG)
 
 # Update XLR variable values
-def set_variables(releaseApi, newVars, allExistingVars, isPropertyType=False):
+def set_variables(releaseApi, newVars, allExistingVars, ignoreDataType=False):
     varLen = len(allExistingVars)
     logging.debug("processing %s variables" % varLen)
 
@@ -33,15 +33,17 @@ def set_variables(releaseApi, newVars, allExistingVars, isPropertyType=False):
         # We don't create new vars, make sure this is an existing Release Variable
         newVar = newVars.get(val.key)
 
-        # Values from property files will always be a string type so we will
+        # Values from property files and xml files will always be a string type so we will
         #     skip comparing the newVar type and the existing var type. If the 
-        #     existing var type is not String, we will let XLR do the conversion
-        #     when the existing var is set with the new value retrieved from 
-        #     the properties file. 
-        if newVar and (isPropertyType or newVar.getType() == val.type):
+        #     existing var type is not String, we will let XLR do the conversion.
+        if newVar and (ignoreDataType or newVar.getType() == val.type):
             val.value = newVar.getValue()
             releaseApi.updateVariable(val)
             if val.type != DynamicVariables.TYPE_PASSWORD:
                 logging.info("  setting: %s = %s" % (val.key, str(val.value)))
             else:
                 logging.info("  setting: %s = *******" % val.key)
+        else:
+            if newVar and newVar.getType() != val.type:
+                logging.debug("FAILURE: Type of new value does not match the existing release variable type so will NOT set: %s = %s"
+                        % (val.key, str(val.value)))
