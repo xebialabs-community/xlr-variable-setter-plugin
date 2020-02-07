@@ -108,7 +108,7 @@ The Release Variable you create to hold the source JSON or XML can have any name
 Below is a sample commit message from BitBucket. Say you wanted the first author's email address in a release variable.  You can see this is the first element in the 'values' array.  The email address is within the 'author' object.  The JSON parser would build a name from as follows:
 
 ```bash
-<name prefix>.values.0.author.emailAddress
+<name prefix>_values_0_author_emailAddress
 ```
 
 where:
@@ -120,7 +120,7 @@ where:
 * emailAddress: the json string name
 
 Assume that you have created a Release Variable named 'bitbucketResponseSourceJSON' and have set up the bitbucket task to store the response JSON in that variable.
-If, within the 'Set Vars From Var' task configuration, you set the prefix to be 'bitbucket', you should then create an empty Release Variable of type 'Text' with a name of 'bitbucket.values.0.author.emailAddress'. When the 'Set Vars From Var' task in runs, the contents of 'bitbucketResponseSourceJSON' Release Variable will be parsed and the Release Variable bitbucket.values.0.author.emailAddress will be populated with the value sruiz@atlassian.com.  
+If, within the 'Set Vars From Var' task configuration, you set the prefix to be 'bitbucket', you should then create an empty Release Variable of type 'Text' with a name of 'bitbucket_values_0_author_emailAddress'. When the 'Set Vars From Var' task in runs, the contents of 'bitbucketResponseSourceJSON' Release Variable will be parsed and the Release Variable bitbucket_values_0_author_emailAddress will be populated with the value sruiz@atlassian.com.  
 
 ```json
 {
@@ -162,8 +162,8 @@ If, within the 'Set Vars From Var' task configuration, you set the prefix to be 
 
 In summary, these are the steps you would take to setup a 'Set Vars From Var' task:
 
-1. Create a Release Variable of type Text to hold the source JSON or XML. This variable can be populated by another XLR task or can be set with a default value.
-2. Create the Release Variables that will be populated by the 'Set Vars From Var' task. Follow the naming convention described above. The variable can be type text, integer or checkbox (boolean). Uncheck the 'Required' and 'Show on Create Release form' options.
+1. Create a Release Variable of type Text to hold the source JSON or XML. This variable can be populated by another XLR task or can be set with a default value. ![VarSetterCreateVar3](images/createVar3.png)
+2. Create the Release Variables that will be populated by the 'Set Vars From Var' task. Follow the naming convention described above. The variable can be type text, integer or checkbox (boolean). Uncheck the 'Required' and 'Show on Create Release form' options. ![VarSetterCreateVar4](images/createVar4.png)
 3. Configure that task by setting the source JSON release variable and by setting the optional name prefix.
 
 ### Configure the Set Vars From Var plugin task
