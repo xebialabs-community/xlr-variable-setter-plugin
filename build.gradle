@@ -27,7 +27,6 @@ repositories {
   }
 }
 
-version = '1.2.0'
 
 test {
     // Auto detected Unit tests only, exclude the end to end integration test
