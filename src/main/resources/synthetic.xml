@@ -28,7 +28,7 @@
         <property name="targetURL" category="input" required="true" label="Target URL with placeholder" 
             description="URL for the file. Use the special place holder :filename:. Examples: https://server.com/foo/:filename:,  http://host/project1/repo1/:filename:?raw"/>
         <property name="fileNameList" category="input" kind="list_of_string" required="true" label="List of file names" 
-            description = "List of file name (including extension) to retrieve and parse. Current implementation can parse .xml, .yml, .yaml, .json and .properties files"/>
+            description = "List of file names (including extension) to retrieve and parse. Current implementation can parse .xml, .yml, .yaml, .json and .properties files"/>
         <property name="failIfFileNotFound" category="input" kind="boolean" default="false" required="true" label="Fail if file not found" 
             description = "If checked, the task will fail if any one of the files listed above is not found."/>
     </type>
