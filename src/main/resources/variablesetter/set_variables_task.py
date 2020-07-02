@@ -24,11 +24,6 @@ from setvariables.parsers import JsonParser
 from com.xebialabs.xlrelease.api.v1 import ReleaseApi
 from com.xebialabs.xlrelease.api.v1.forms import Variable
 
-logging.basicConfig(filename='log/varSetterPlugin.log',
-                            filemode='a',
-                            format='%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s',
-                            datefmt='%H:%M:%S',
-                            level=logging.DEBUG)
 
 # These are the file types we are prepared to process
 listOfYamlTypes = ['.yaml' , '.yml']
@@ -43,13 +38,15 @@ def main():
     allExistingVars = releaseApi.getVariables(release.id)
     # If it is a file type we can process, place in interator
     filesToProcessItr = filter(lambda x: os.path.splitext(x)[1] in (listOfPropertiesTypes + listOfYamlTypes + listOfXmlTypes +listOfJsonTypes), fileNameList )
-    logging.debug("The filtered list = %s" % list(filesToProcessItr))
+    logging.info("The filtered list = %s" % list(filesToProcessItr))
+
+    # TODO - fail if no valid file found
     
     for fileName in filesToProcessItr:
         ignoreDataType = False
         fileType = os.path.splitext(fileName)[1]
         url = targetURL.replace(":filename:", fileName)
-        logging.debug("The new URL is "+url)
+        logging.info("The new URL is "+url)
         data = getData(url)
 
         if len(data) == 0:
@@ -70,6 +67,7 @@ def main():
             logging.error("Unknown file type: "+fileType)
             sys.exit(1)
 
+        logging.debug("newVars = %s" % newVars)
         set_variables(releaseApi, newVars, allExistingVars, ignoreDataType)
 
 
@@ -82,19 +80,20 @@ def getData(url):
         response = urllib2.urlopen(request)
     except urllib2.URLError as e:
         if hasattr(e, 'reason'):
-            logging.debug('Failed to reach server - Reason: %s'% e.reason)
+            logging.info('Failed to reach server - Reason: %s'% e.reason)
         if hasattr(e, 'code'):
-            logging.debug('The server did not fulfill the request - Code: %s'% str(e.code))
+            logging.info('The server did not fulfill the request - Code: %s'% str(e.code))
 
         # If user has configured for failure if a file is not retrieved
         if failIfFileNotFound:
-            logging.debug('File Not Found: %s'% url)
+            logging.info('File Not Found: %s'% url)
             print ("File not found - %s" % url)
             sys.exit(1)
         else:
             return data
     else:
-        data = response.read(20000) # read only 20 000 chars 
+        data = response.read(20000) # read only 20 000 chars
+        logging.debug('data = %s, code = %s' % (data, response.getcode())) 
     return data
 
 

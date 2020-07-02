@@ -20,18 +20,14 @@ from setvariables.parsers import XmlParser
 from com.xebialabs.xlrelease.api.v1 import ReleaseApi
 from com.xebialabs.xlrelease.api.v1.forms import Variable
 
-logging.basicConfig(filename='log/varSetterPlugin.log',
-                            filemode='a',
-                            format='%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s',
-                            datefmt='%H:%M:%S',
-                            level=logging.DEBUG)
+
 
 def main():
     # We will only update values for existing variables. We do not create new ones
     allExistingVars = releaseApi.getVariables(release.id)
 
-    logging.debug("allExistingVars = %s" % allExistingVars)
-    logging.debug("type(allExistingVars) = %s" % type(allExistingVars))
+    logging.info("allExistingVars = %s" % allExistingVars)
+    logging.info("type(allExistingVars) = %s" % type(allExistingVars))
 
     newVars = []
     if dataFormat == 'XML':

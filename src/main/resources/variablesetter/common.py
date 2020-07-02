@@ -15,11 +15,6 @@ from setvariables import DynamicVariables
 from com.xebialabs.xlrelease.api.v1 import ReleaseApi
 from com.xebialabs.xlrelease.api.v1.forms import Variable
 
-logging.basicConfig(filename='log/varSetterPlugin.log',
-                            filemode='a',
-                            format='%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s',
-                            datefmt='%H:%M:%S',
-                            level=logging.DEBUG)
 
 # Update XLR variable values
 def set_variables(releaseApi, newVars, allExistingVars, ignoreDataType=False):
@@ -28,7 +23,8 @@ def set_variables(releaseApi, newVars, allExistingVars, ignoreDataType=False):
 
     for i in range(varLen): 
         val = allExistingVars[i]
-        logging.debug("  key: %s" % val.key)
+        logging.info("  key: %s" % val.key)
+        printOutValue = ""
 
         # We don't create new vars, make sure this is an existing Release Variable
         newVar = newVars.get(val.key)
@@ -45,5 +41,9 @@ def set_variables(releaseApi, newVars, allExistingVars, ignoreDataType=False):
                 logging.info("  setting: %s = *******" % val.key)
         else:
             if newVar and newVar.getType() != val.type:
+                if val.type != DynamicVariables.TYPE_PASSWORD:
+                    printOutValue =  str(val.value)
+                else:
+                    printOutValue = "**********"
                 logging.debug("FAILURE: Type of new value does not match the existing release variable type so will NOT set: %s = %s"
-                        % (val.key, str(val.value)))
+                        % (val.key, printOutValue))
