@@ -10,7 +10,11 @@
 
 This document describes the functionality provided by the XL Release xlr-variable-setter-plugin. 
 
-See the [XL Release reference manual](https://docs.xebialabs.com/xl-release) for background information on XL Release and release automation concepts.  
+See the [XL Release reference manual](https://docs.xebialabs.com/v.9.7/release#platform) for background information on XL Release and release automation concepts. 
+
+This is a 'See It Work' plugin, meaning it has been enhanced to include functionality that makes it easy to spin up and configure a dockerized version of the XebiaLabs platform with this plugin installed. Using the provided test data, you can then try out the plugin features. This is useful for familiarizing yourself with the plugin functionality, for demonstrations, testing and for further plugin development.
+
+The plugin code base also includes a gradle task for [automatic integration testing](#to-run-integration-tests).
 
 ## Overview
 
@@ -179,12 +183,12 @@ Build and package the plugins with...
 ./gradlew assemble
 ```
 
-### To run integration tests -
+### To run integration tests
 
 1. You will need to have Docker  and Docker Compose installed.
-2. The XL-Release image expects to find a valid XL-Release license on your machine, at this location: ~xl-licenses/xl-release-license.lic.
-3. Open a terminal in the root of the xlr-variable-setter-plugin project and run the following test
-4. Plugin log files will be written to <plugin source code directory>/build/reports/tests/log directory 
+2. The XL-Release image will use the community license. Note that by using this license, you are accepting the [End User License Agreement](https://dist.xebialabs.com/public/legal/eula-artifacts-v10.txt). If you prefer to use your own license, modify the docker-compose.yml file.
+3. Plugin log files will be written to <plugin source code directory>/build/reports/tests/log directory
+4. Open a terminal in the root of the xlr-variable-setter-plugin project and run the following test  
 
 ```bash
 ./gradlew clean integrationTest
@@ -200,17 +204,18 @@ NOTE:
 2. XL Release will run on the [localhost port 15516](http://localhost:15516/).
 3. The XL Release username / password is admin / admin.
 4. The Mockserver runs on the [localhost port 5099](http://localhost:5099/).
-5. The example YAML, XML and property files used in the demo are located in the <xlr-varible-setter-plugin code base>/src/test/resources/mockserver/responses directory. The XLR template contains the example JSON source for the 'Set Vars from JSON' task.
-6. Before running the demo, be sure to create the plugin by opening a terminal, cd into the plugin source code directory, and run
+5. The Mockserver username / password is xlr_test / admin.
+6. The example YAML, XML and property files used in the demo are located in the <xlr-varible-setter-plugin code base>/src/test/resources/mockserver/responses directory. The XLR template contains the example JSON source for the 'Set Vars from JSON' task.
+7. Before running the demo, be sure to create the plugin by opening a terminal, cd into the plugin source code directory, and run
 
 ```bash
 ./gradlew clean build
 ```
 
-7. To run the dev/demo mode, open a terminal, cd into the src/test/resources/docker directory of the plugin code and run
+8. To run the dev/demo mode, open a terminal, cd into the src/test/resources/docker directory of the plugin code and run
 
 ```bash
-docker-compose up -d
+docker-compose up
 ```
 
 After XLR starts up, log in using the admin / admin credentials and then use the XLR 'Import Template' feature to import the template found in the src/test/resources/docker/initialize/data directory. You can then create a release and run the test example.
