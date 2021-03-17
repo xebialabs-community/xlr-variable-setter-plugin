@@ -61,7 +61,9 @@ dependencies {
   testCompile "junit:junit:4.11"
   testCompile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
   testCompile 'org.assertj:assertj-core:3.6.2'
-  testCompile "org.testcontainers:testcontainers:1.11.3"
+  //testCompile "org.testcontainers:testcontainers:1.11.3"
+  testCompile group: 'org.testcontainers', name: 'testcontainers', version: '1.15.2'
+
   testCompile group: 'org.slf4j', name: 'slf4j-simple', version: '1.8.0-beta2'
   testCompile group: 'org.skyscreamer', name: 'jsonassert', version: '1.5.0'
   
